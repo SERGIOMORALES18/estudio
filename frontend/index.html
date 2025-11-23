@@ -1,0 +1,68 @@
+<!--
+  Velvet Club - landing page (frontend)
+  - Página principal estática que muestra una animación estilo "casino" y perfiles que caen desde arriba.
+  - El código JS separa lógica en varios archivos: app.js (dom + render), animations.js (animaciones), api.js (fetch / mocks).
+  - No juntar todo en un solo archivo para facilitar cambios.
+-->
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Velvet Club</title>
+    <meta name="description" content="Velvet Club - perfiles" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="logo">Velvet Club</div>
+      <nav class="top-nav">
+        <a href="#profiles">Perfiles</a>
+        <a href="#about">Sobre</a>
+        <a href="#contact">Contacto</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Hero con ambiente tipo casino: degradado rojo/negro y luces animadas -->
+      <section class="hero">
+        <div class="casino-lights">
+          <div class="light l1"></div>
+          <div class="light l2"></div>
+          <div class="light l3"></div>
+        </div>
+        <div class="hero-content">
+          <h1>Velvet Club</h1>
+          <p class="subtitle">Encuentra y conecta con perfiles destacados</p>
+        </div>
+      </section>
+
+      <!-- Contenedor donde las tarjetas de perfil "caen" desde arriba -->
+      <section id="profiles" class="profiles-section">
+        <div id="falling-area" class="falling-area"></div>
+        <div class="profiles-grid" id="profiles-grid" aria-live="polite"></div>
+      </section>
+
+      <!-- Modal para ver detalle de perfil y galería de fotos -->
+      <div id="profile-modal" class="modal" aria-hidden="true">
+        <div class="modal-dialog">
+          <button id="modal-close" class="modal-close" aria-label="Cerrar">×</button>
+          <div id="modal-content"></div>
+        </div>
+      </div>
+
+      <section id="about" class="about">
+        <h2>Sobre Velvet Club</h2>
+        <p>Plataforma de perfiles con estilo exclusivo.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <small>&copy; Velvet Club</small>
+    </footer>
+
+    <script src="js/api.js" type="module"></script>
+    <script src="js/animations.js" type="module"></script>
+    <script src="js/app.js" type="module"></script>
+  </body>
+</html>

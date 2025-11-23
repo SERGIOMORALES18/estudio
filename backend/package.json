@@ -1,0 +1,22 @@
+{
+  "name": "velvet-backend",
+  "version": "0.1.0",
+  "description": "Backend for Velvet Club - serves frontend and mock API",
+  "main": "src/server.js",
+  "scripts": {
+    "setup": "node scripts/check-install.js",
+    "start": "npm run setup && node src/server.js",
+    "dev": "npm run setup && nodemon src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
