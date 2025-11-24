@@ -11,22 +11,29 @@ const nodeModules = path.join(root, 'node_modules');
 function findNpmCommand() {
   // Prefer npm next to the running node executable (works when Node is installed but PATH not updated)
   try {
-    const nodeDir = path.dirname(process.execPath);
-    if (process.platform === 'win32') {
-      const candidate = path.join(nodeDir, 'npm.cmd');
-      if (fs.existsSync(candidate)) return candidate;
-    }
+    // Avoid executing the internal npm.cmd path directly on Windows because
+    // spawning the .cmd file by absolute path can fail with EINVAL in some
+    // environments. Return the plain 'npm' command and let the OS resolve
+    // it (npm -> npm.cmd) via the PATH, which is more robust.
   } catch (e) {
     // ignore
   }
-  // Fallback to plain 'npm' (will fail if not in PATH)
-  return process.platform === 'win32' ? 'npm.cmd' : 'npm';
+  return 'npm';
 }
 
 if (!fs.existsSync(nodeModules)) {
   console.log('node_modules not found. Running npm install in', root);
-  const npmCmd = findNpmCommand();
-  const res = spawnSync(npmCmd, ['install'], { cwd: root, stdio: 'inherit' });
+  // If the parent npm provided an execpath, run npm via the current node
+  // executable and the npm CLI script. This is reliable even when 'npm'
+  // is not present in PATH for child processes.
+  let res;
+  if (process.env.npm_execpath) {
+    const npmCli = process.env.npm_execpath;
+    res = spawnSync(process.execPath, [npmCli, 'install'], { cwd: root, stdio: 'inherit' });
+  } else {
+    const npmCmd = findNpmCommand();
+    res = spawnSync(npmCmd, ['install'], { cwd: root, stdio: 'inherit' });
+  }
   if (res.error) {
     console.error('npm install failed:', res.error);
     process.exit(1);

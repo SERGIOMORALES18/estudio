@@ -1,12 +1,9 @@
-/*
-  styles.css
-  - Tema rojo/negro para Velvet Club
-  - Incluye estilos base, layout responsive y animaciones principales.
-*/
+/* styles.css — limpiado y consolidado
+   Contiene sólo las reglas usadas en la cabecera/hero y componentes principales */
 :root{
-  --bg:#0b0303;
-  --red:#b90f1a;
-  --dark:#0b0b0b;
+  --bg:#3b0505;
+  --bg-deep:#220202;
+  --red:#c31a1a;
   --muted:#bdb3b3;
   --card-bg:rgba(255,255,255,0.04);
 }
@@ -14,55 +11,189 @@
 html,body{height:100%}
 body{
   font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
-  background:linear-gradient(180deg,var(--bg),#1a0707 60%);
+  background:
+    radial-gradient(1000px 500px at 12% 12%, rgba(255,120,120,0.04), transparent 16%),
+    radial-gradient(700px 320px at 88% 78%, rgba(255,60,60,0.03), transparent 14%),
+    linear-gradient(180deg,#7b0d0d 0%, var(--bg) 36%, var(--bg-deep) 100%);
   color:#fff;
 }
-.site-header{
-  display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:transparent;
+
+/* subtle overlay to break banding and add texture without heavy noise */
+body::before{
+  content:'';
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0 1px, transparent 1px 3px);
+  opacity:0.05;mix-blend-mode:overlay;
 }
+
+.site-header{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:transparent}
 .logo{font-weight:700;font-size:1.4rem;color:var(--red);letter-spacing:1px}
 .top-nav a{color:var(--muted);margin-left:1rem;text-decoration:none}
 
+/* Header logo */
+.logo .brand{display:inline-block}
+.logo .velvet{font-family:'Bebas Neue','Oswald',Arial,sans-serif;font-weight:700;background:linear-gradient(180deg,#ffd86b,#ffb400,#c07b00);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1px rgba(15,7,7,0.7);text-shadow:0 2px 6px rgba(0,0,0,0.45);letter-spacing:1px;display:inline-block;font-size:1.4rem}
+.logo .club{font-family:'Great Vibes',cursive;font-style:italic;color:#f5d9b0;font-size:1.2rem;margin-left:0.2rem}
+
+/* Hero/title */
 .hero{position:relative;min-height:40vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .hero-content{z-index:5;text-align:center}
-.hero h1{font-size:3rem;color:var(--red);text-shadow:0 8px 30px rgba(185,15,26,0.25)}
-.subtitle{color:var(--muted);margin-top:.5rem}
+.hero-title{line-height:1;margin:0;text-align:center;position:relative;display:inline-block;padding-bottom:1.2rem}
 
-/* luces estilo casino */
-.casino-lights{position:absolute;inset:0;pointer-events:none}
-.casino-lights .light{position:absolute;width:8rem;height:8rem;border-radius:50%;filter:blur(40px);opacity:.14}
-.casino-lights .l1{left:10%;top:10%;background:radial-gradient(circle,#ff9d9d,#000)}
-.casino-lights .l2{right:10%;top:5%;background:radial-gradient(circle,#ff6b6b,#000)}
-.casino-lights .l3{left:45%;top:0;background:radial-gradient(circle,#ff3b3b,#000)}
+.hero-title .velvet{
+  font-family:'Bebas Neue',Impact,Arial,sans-serif;font-weight:900;
+  /* red gradient + layered internal sparkles */
+  background-image:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,1) 0px, rgba(255,255,255,0.95) 2px, transparent 10px),
+    radial-gradient(circle at 58% 18%, rgba(255,245,200,0.98) 0px, rgba(255,245,200,0.85) 3px, transparent 16px),
+    radial-gradient(circle at 42% 62%, rgba(255,255,255,0.96) 0px, rgba(255,200,120,0.8) 3px, transparent 20px),
+    radial-gradient(circle at 80% 22%, rgba(255,255,255,0.95) 0px, rgba(255,230,180,0.7) 2px, transparent 14px),
+    linear-gradient(180deg,#ff0f0f 0%,#a60a0a 70%);
+  background-size:160% 160%,180% 180%,200% 200%,140% 140%,100% 100%;
+  background-repeat:no-repeat;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-stroke:2.6px rgba(0,0,0,0.75);
+  text-shadow:0 18px 48px rgba(255,50,50,0.36),0 6px 0 rgba(0,0,0,0.82),0 0 48px rgba(255,110,110,0.22);
+  letter-spacing:3px;display:block;font-size:7.6rem;position:relative;padding:0 0.12rem;animation:sparkle 2.6s ease-in-out infinite
+}
 
-.profiles-section{position:relative;padding:2rem}
+/* small star glint (SVG) */
+.hero-title .velvet::before{
+  content: "";
+  position: absolute;
+  top: 4%;
+  right: 12%;
+  width: 56px;
+  height: 56px;
+  pointer-events: none;
+  /* richer starburst SVG (embedded) with gradient fill and stronger glow */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%23ffffff'/><stop offset='1' stop-color='%23ffd86b'/></linearGradient></defs><g><circle cx='32' cy='26' r='6' fill='url(%23g)'/><path d='M32 2 L38 22 L58 12 L40 28 L62 32 L42 36 L54 58 L38 40 L20 58 L30 36 L2 32 L24 28 L6 12 L26 22 Z' fill='%23ffffff' opacity='0.95'/></g></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 16px rgba(255,220,140,0.98));
+  opacity: 0;
+  transform: scale(0.9) rotate(6deg);
+  animation: starFlash 3.6s linear infinite;
+}
+
+/* glossy sweep across Velvet */
+.hero-title .velvet::after{content:"";position:absolute;left:-10%;top:-10%;width:120%;height:120%;background:linear-gradient(120deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.12) 10%, rgba(255,255,255,0.04) 30%, transparent 40%);transform:skewX(-20deg) translateX(-120%);mix-blend-mode:screen;opacity:0.98;pointer-events:none;animation:shine 1.9s ease-in-out infinite}
+
+/* Club overlay: golden, legible and with sheen */
+.hero-title .club{
+  position:absolute;left:50%;transform:translateX(-50%);top:52%;z-index:10;display:inline-block;padding:0.06rem 0.5rem;
+  font-family:'Great Vibes',cursive;font-style:italic;font-size:4.6rem;line-height:1;
+  /* brighter, more saturated gold */
+  background:linear-gradient(180deg,#fff8e6 0%,#ffe39a 25%,#f2bf5a 55%,#c48a2a 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  /* golden stroke for separation */
+  -webkit-text-stroke:0.9px #cfa33a;
+  /* stronger golden glow, reduce dark opacity to avoid looking heavy */
+  text-shadow:0 6px 14px rgba(180,120,50,0.6),0 2px 6px rgba(0,0,0,0.45),0 0 26px rgba(255,200,120,0.45);
+  filter:drop-shadow(0 6px 18px rgba(220,160,80,0.14));
+}
+
+/* subtle blurred backdrop behind Club for contrast */
+.hero-title .club::before{content:"";position:absolute;left:50%;top:50%;transform:translateX(-50%);width:calc(100% + 0.6rem);height:calc(100% + 0.2rem);background:rgba(0,0,0,0.08);border-radius:6px;filter:blur(3px);z-index:7;pointer-events:none}
+
+/* sheen for Club */
+.hero-title .club::after{content:"";position:absolute;left:-30%;top:-20%;width:160%;height:140%;background:linear-gradient(120deg,transparent 0%,rgba(255,255,255,0.95) 28%,rgba(255,255,255,0.12) 44%,transparent 60%);transform:skewX(-20deg) translateX(-120%);mix-blend-mode:screen;opacity:1;pointer-events:none;z-index:9;animation:clubShine 1.6s ease-in-out infinite}
+
+@keyframes clubShine{0%{transform:skewX(-20deg) translateX(-120%);opacity:0}30%{opacity:0.9}50%{transform:skewX(-20deg) translateX(120%);opacity:0.9}100%{transform:skewX(-20deg) translateX(260%);opacity:0}}
+
+@keyframes shine{0%{transform:skewX(-20deg) translateX(-120%);opacity:0}20%{opacity:0.95}45%{transform:skewX(-20deg) translateX(120%);opacity:0.98}100%{transform:skewX(-20deg) translateX(240%);opacity:0}}
+
+@keyframes sparkle{0%{background-position:20% 10%,58% 18%,42% 62%,80% 22%,0% 0%;opacity:0.96}25%{background-position:22% 6%,56% 26%,46% 58%,82% 18%;opacity:1}50%{background-position:15% 18%,60% 14%,40% 64%,78% 26%;opacity:0.98}75%{background-position:18% 12%,62% 20%,44% 60%,80% 22%;opacity:1}100%{background-position:20% 10%,58% 18%,42% 62%,80% 22%;opacity:0.96}}
+
+@keyframes starFlash{0%{opacity:0;transform:scale(0.6) rotate(12deg)}8%{opacity:1;transform:scale(1.18) rotate(6deg)}16%{opacity:0.4;transform:scale(1.02) rotate(2deg)}30%{opacity:0;transform:scale(0.9) rotate(-4deg)}100%{opacity:0}}
+
+@media (max-width:600px){.hero-title .velvet{font-size:3.2rem}.hero-title .club{font-size:1.8rem}}
+
+.profiles-section{position:relative;padding:2.4rem 1.2rem;max-width:1300px;margin:0 auto}
 .falling-area{position:absolute;inset:0;pointer-events:none}
-
-.profiles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;position:relative;z-index:3}
-.profile-card{background:var(--card-bg);padding:0.5rem;border-radius:12px;overflow:hidden;backdrop-filter: blur(6px);box-shadow:0 8px 30px rgba(0,0,0,0.5);cursor:pointer;transition:transform .18s ease}
+/* responsive grid for up to 15 cards: auto-fit with min width and centered container */
+.profiles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem;position:relative;z-index:3;align-items:start;justify-items:center}
+.profile-card{background:var(--card-bg);padding:0;border-radius:12px;overflow:visible;backdrop-filter:blur(6px);box-shadow:0 8px 30px rgba(0,0,0,0.5);cursor:pointer;transition:transform .18s ease;width:100%;max-width:320px;perspective:1200px}
 .profile-card:hover{transform:translateY(-6px)}
-.profile-photo{width:100%;height:260px;object-fit:cover;border-radius:8px}
-.profile-meta{padding:0.5rem}
-.profile-meta h3{color:#fff;margin-bottom:.25rem}
-.profile-meta p{color:var(--muted);font-size:.9rem}
+.profile-photo{width:100%;height:60%;object-fit:cover;border-radius:8px 8px 0 0;display:block}
+/* card inner is defined below (keeps position/3d transforms) */
 
-/* modal */
+
+/* Card as vertical flip card */
+.profile-card{
+  width: 260px;
+  height: 360px;
+  perspective: 1200px;
+  background: transparent;
+  padding: 0;
+  border-radius: 12px;
+}
+.profile-card .card-inner{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(.2,.9,.2,1);
+  border-radius: 12px;
+}
+.profile-card.is-flipped .card-inner{transform: rotateY(180deg)}
+
+/* multi-flip animations: several full turns then land on the target face */
+@keyframes multiToBack{ /* end at 180 + 2*360 = 900deg */
+  from{transform: rotateY(0deg)}
+  to{transform: rotateY(900deg)}
+}
+@keyframes multiToFront{ /* end at 0 + 2*360 = 720deg (front) */
+  from{transform: rotateY(180deg)}
+  to{transform: rotateY(720deg)}
+}
+.card-inner.multiflip{animation: multiToBack 1.05s cubic-bezier(.2,.9,.2,1) forwards}
+.card-inner.multiflip-back{animation: multiToFront 1.05s cubic-bezier(.2,.9,.2,1) forwards}
+
+.card-front, .card-back{
+  position: absolute;inset:0;border-radius:12px;backface-visibility:hidden;overflow:hidden;
+}
+.card-front{background:linear-gradient(180deg,rgba(0,0,0,0.12),rgba(0,0,0,0.25));display:flex;flex-direction:column}
+.card-back{background:linear-gradient(180deg,rgba(15,11,11,0.9),rgba(0,0,0,0.95));transform:rotateY(180deg);display:flex;align-items:center;justify-content:center;padding:1rem}
+
+.meta-overlay{position:absolute;left:0;right:0;bottom:0;padding:0.9rem;background:linear-gradient(180deg,transparent,rgba(0,0,0,0.6));opacity:0;transform:translateY(8px);transition:all .25s ease;display:flex;flex-direction:column;align-items:flex-start}
+.profile-card:hover .meta-overlay{opacity:1;transform:translateY(0)}
+.meta-overlay .name-age{color:#fff;font-weight:700;margin:0;font-size:1.05rem}
+.meta-overlay .meta-details{display:none;color:var(--muted);font-size:.85rem;margin-top:0.35rem}
+
+.back-content{color:#fff;text-align:left}
+.back-content .description{font-size:0.95rem;color:#ddd;margin-bottom:1rem;max-height:160px;overflow:auto}
+.btn-more{background:linear-gradient(180deg,#ffd27a,#e0a83a);border:none;padding:.5rem .8rem;border-radius:8px;color:#3b2a12;font-weight:700;cursor:pointer}
+
+/* keep previous grid behavior but make cards centered */
+
+
+
 .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.8));}
 .modal[aria-hidden="false"]{display:flex}
-.modal-dialog{background:#0f0b0b;border-radius:12px;padding:1rem;max-width:900px;width:95%;}
+.modal-dialog{background:#0f0b0b;border-radius:12px;padding:1rem;max-width:900px;width:95%}
 .modal-close{position:absolute;right:1rem;top:1rem;background:transparent;border:none;color:#fff;font-size:1.6rem}
 
-/* Animaciones para las tarjetas que caen */
-.falling {position:absolute;width:180px;pointer-events:none;z-index:2;transform:translateY(-120%);}
-@keyframes fallDown {
-  0%{transform:translateY(-120%) scale(.9);opacity:0}
-  20%{opacity:1}
-  100%{transform:translateY(100vh) scale(1);opacity:1}
-}
+/* modal photos layout used by JS when opening profile */
+.modal-photos{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap}
+.modal-photos img{height:160px;object-fit:cover;border-radius:8px}
+
+/* Footer styling to match the hero aesthetic */
+.site-footer{padding:1.2rem 1rem;background:linear-gradient(180deg,transparent,rgba(0,0,0,0.18));border-top:1px solid rgba(255,255,255,0.03);color:rgba(255,240,200,0.9);text-align:center}
+.site-footer small{display:block;opacity:0.9}
+.site-footer a{color:#f3d39a;text-decoration:none}
+
+/* falling animation for decorative cards */
+.falling{position:absolute;pointer-events:none;z-index:1;transform:translateY(-120%);filter:blur(0.4px) saturate(0.95);opacity:0.82}
+/* inner falling card styles (smaller and subtler) */
+.falling .falling-card{width:120px;border-radius:8px;overflow:hidden;background:linear-gradient(180deg,rgba(0,0,0,0.18),rgba(0,0,0,0.22));border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 18px rgba(0,0,0,0.35);backdrop-filter:blur(2px)}
+.falling .falling-card img{width:100%;height:84px;object-fit:cover;display:block;opacity:0.92}
+.falling .falling-caption{padding:.3rem .4rem;color:#fff;font-size:.86rem;background:linear-gradient(180deg,transparent,rgba(0,0,0,0.45))}
+@keyframes fallDown{0%{transform:translateY(-120%) scale(.92);opacity:0}20%{opacity:0.78}100%{transform:translateY(100vh) scale(1);opacity:0.78}}
 .falling.animate{animation-name:fallDown;animation-timing-function:linear;animation-fill-mode:forwards}
 
-/* Responsive tweaks */
-@media (max-width:600px){
-  .hero h1{font-size:2rem}
-  .profile-photo{height:180px}
-}
+/* hero small-screen tweaks */
+@media (max-width:600px){.hero h1{font-size:2rem}.profile-photo{height:180px}}
+

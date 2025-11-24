@@ -5,8 +5,10 @@
   "main": "src/server.js",
   "scripts": {
     "setup": "node scripts/check-install.js",
-    "start": "npm run setup && node src/server.js",
-    "dev": "npm run setup && nodemon src/server.js"
+    "prestart": "npm run setup",
+    "start": "node src/server.js",
+    "predev": "npm run setup",
+    "dev": "nodemon src/server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
