@@ -6,7 +6,7 @@
     <title>Velvet Club</title>
     <meta name="description" content="Velvet Club - perfiles" />
     <link rel="stylesheet" href="css/styles.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Bebas+Neue&family=Great+Vibes&display=swap" rel="stylesheet">
   </head>
   <body>
     <header class="site-header">
@@ -32,28 +32,74 @@
         </div>
       </section>
 
+      <!-- Menú de apuestas: filtros por atributos corporales y preferencias sexuales -->
+      <section id="filters" class="filters-section">
+        <div class="filters-bar">
+          <div class="filter-title" style="color:#ffd9b0;font-weight:800;margin-right:1rem;">Menú de apuestas</div>
+
+          <div class="filter-item">
+            <label for="filter-breast">Senos</label>
+            <select id="filter-breast">
+              <option value="">Cualquiera</option>
+              <option value="grandes">Grandes</option>
+              <option value="pequeños">Pequeños</option>
+            </select>
+          </div>
+
+          <div class="filter-item">
+            <label for="filter-butt">Cola</label>
+            <select id="filter-butt">
+              <option value="">Cualquiera</option>
+              <option value="grande">Grande</option>
+              <option value="pequeña">Pequeña</option>
+            </select>
+          </div>
+
+          <div class="filter-item">
+            <label for="filter-preference">Preferencia</label>
+            <select id="filter-preference">
+              <option value="">Cualquiera</option>
+              <!-- se añadirán opciones dinámicamente (tags + anal/trios) -->
+            </select>
+          </div>
+
+          <div class="filter-item age-range">
+            <label>Edad</label>
+            <div class="age-inputs">
+              <input id="filter-min-age" type="number" min="18" placeholder="mín" />
+              <span>—</span>
+              <input id="filter-max-age" type="number" min="18" placeholder="máx" />
+            </div>
+          </div>
+
+          <div class="filter-actions">
+            <button id="filter-reset" class="btn-reset">Restablecer</button>
+          </div>
+        </div>
+      </section>
+
       <!-- Contenedor donde las tarjetas de perfil "caen" desde arriba -->
       <section id="profiles" class="profiles-section">
         <div id="falling-area" class="falling-area"></div>
         <div class="profiles-grid" id="profiles-grid" aria-live="polite"></div>
       </section>
 
-      <!-- Modal para ver detalle de perfil y galería de fotos -->
-      <div id="profile-modal" class="modal" aria-hidden="true">
-        <div class="modal-dialog">
-          <button id="modal-close" class="modal-close" aria-label="Cerrar">×</button>
-          <div id="modal-content"></div>
-        </div>
-      </div>
-
-      <section id="about" class="about">
-        <h2>Sobre Velvet Club</h2>
-        <p>Plataforma de perfiles con estilo exclusivo.</p>
-      </section>
+      <!-- About moved to footer; main now only contains hero and profiles -->
     </main>
 
     <footer class="site-footer">
-      <small>&copy; Velvet Club</small>
+      <div class="footer-inner">
+        <div class="footer-about">
+          <h3>Sobre Velvet Club</h3>
+          <p>Plataforma de perfiles con estilo exclusivo.</p>
+        </div>
+        <div class="footer-links">
+          <small>&copy; Velvet Club</small>
+          <nav class="footer-nav" aria-label="Footer">
+            <a href="#profiles">Perfiles</a> · <a href="#contact">Contacto</a>
+          </nav>
+        </div>
+      </div>
     </footer>
 
     <script src="js/api.js" type="module"></script>
