@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Perfil — Velvet Club</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <!-- Responsive rules should load last so they can override component styles -->
+    <link rel="stylesheet" href="css/responsive.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="logo"><span class="brand"><span class="velvet">Velvet</span> <span class="club">Club</span></span></div>
+      <nav class="top-nav">
+        <a href="index.html">Inicio</a>
+        <a href="#">Perfiles</a>
+      </nav>
+    </header>
+
+    <main style="padding:2rem; max-width:1000px; margin:0 auto;">
+      <a href="index.html" style="display:inline-block;margin-bottom:1rem;color:#f3d39a;text-decoration:none">← Volver</a>
+      <section id="profile-detail">
+        <!-- Content injected by js/profile.js -->
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <small>&copy; Velvet Club</small>
+        <nav class="footer-nav" aria-label="Footer">
+          <a href="#">Sobre</a> · <a href="#">Contacto</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script type="module" src="js/profile.js"></script>
+  </body>
+</html>

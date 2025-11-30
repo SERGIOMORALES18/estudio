@@ -1,3 +1,8 @@
+/**
+ * animations.js — utilidades para animaciones decorativas
+ * - Provee efectos visuales ligeros (ej. tarjetas que "caen").
+ */
+
 function randomBetween(min, max) {
   return Math.random() * (max - min) + min;
 }

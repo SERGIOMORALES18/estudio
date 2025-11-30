@@ -1,0 +1,29 @@
+/*
+  base.css — variables, reset y fondo principal
+  Cargado primero para establecer variables y reglas globales.
+*/
+:root{
+  /* Variables de colores y fondos utilizados por componentes */
+  --bg: #3b0505;
+  --bg-deep: #220202;
+  --red: #c31a1a;
+  --muted: #bdb3b3;
+  --card-bg: rgba(255,255,255,0.04);
+}
+
+/* Global reset y tipografía */
+*{ box-sizing: border-box; margin: 0; padding: 0 }
+html, body { height: 100% }
+body{
+  font-family: 'Playfair Display', Georgia, "Times New Roman", serif;
+  color: #fff;
+  background: linear-gradient(180deg, #5c0b0b 0%, #3b0505 38%, #210202 100%);
+}
+
+/* Overlay sutil para romper banding y añadir textura sin imágenes pesadas */
+body::before{
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.01) 0 1px, transparent 1px 4px);
+  opacity: 0.03; mix-blend-mode: overlay;
+}

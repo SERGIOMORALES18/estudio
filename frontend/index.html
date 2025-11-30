@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Velvet Club</title>
     <meta name="description" content="Velvet Club - perfiles" />
-    <link rel="stylesheet" href="css/styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Bebas+Neue&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <!-- Responsive rules should load last so they can override component styles -->
+    <link rel="stylesheet" href="css/responsive.css">
   </head>
   <body>
     <header class="site-header">
@@ -32,48 +38,62 @@
         </div>
       </section>
 
-      <!-- Menú de apuestas: filtros por atributos corporales y preferencias sexuales -->
+      <!-- Menú de apuestas: botón que abre el panel de filtros (opciones como cuadros seleccionables) -->
       <section id="filters" class="filters-section">
         <div class="filters-bar">
-          <div class="filter-title" style="color:#ffd9b0;font-weight:800;margin-right:1rem;">Menú de apuestas</div>
+          <button id="filter-toggle" class="filter-toggle">Menú de apuestas ▾</button>
 
-          <div class="filter-item">
-            <label for="filter-breast">Senos</label>
-            <select id="filter-breast">
-              <option value="">Cualquiera</option>
-              <option value="grandes">Grandes</option>
-              <option value="pequeños">Pequeños</option>
-            </select>
-          </div>
+          <!-- acciones del filtro (reset eliminado porque no era funcional) -->
+        </div>
 
-          <div class="filter-item">
-            <label for="filter-butt">Cola</label>
-            <select id="filter-butt">
-              <option value="">Cualquiera</option>
-              <option value="grande">Grande</option>
-              <option value="pequeña">Pequeña</option>
-            </select>
-          </div>
-
-          <div class="filter-item">
-            <label for="filter-preference">Preferencia</label>
-            <select id="filter-preference">
-              <option value="">Cualquiera</option>
-              <!-- se añadirán opciones dinámicamente (tags + anal/trios) -->
-            </select>
-          </div>
-
-          <div class="filter-item age-range">
-            <label>Edad</label>
-            <div class="age-inputs">
-              <input id="filter-min-age" type="number" min="18" placeholder="mín" />
-              <span>—</span>
-              <input id="filter-max-age" type="number" min="18" placeholder="máx" />
+        <div class="filters-panel" aria-hidden="true">
+          <div class="filter-group">
+            <div class="group-title">Senos</div>
+            <div class="options-row">
+              <label class="option">
+                <input type="checkbox" name="breast" value="grandes" />
+                <span class="option-box"></span>
+                <span class="option-label">Grandes</span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="breast" value="pequeños" />
+                <span class="option-box"></span>
+                <span class="option-label">Pequeños</span>
+              </label>
             </div>
           </div>
 
-          <div class="filter-actions">
-            <button id="filter-reset" class="btn-reset">Restablecer</button>
+          <div class="filter-group">
+            <div class="group-title">Cola</div>
+            <div class="options-row">
+              <label class="option">
+                <input type="checkbox" name="butt" value="grande" />
+                <span class="option-box"></span>
+                <span class="option-label">Grande</span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="butt" value="pequeña" />
+                <span class="option-box"></span>
+                <span class="option-label">Pequeña</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <div class="group-title">Preferencias</div>
+            <div class="options-row" id="filter-preference-list">
+              <!-- Preferencias fijas: Horario nocturno, Anal, Trios -->
+              <label class="option"><input type="checkbox" name="preference" value="horario nocturno" /><span class="option-box"></span><span class="option-label">Horario nocturno</span></label>
+              <label class="option"><input type="checkbox" name="preference" value="anal" /><span class="option-box"></span><span class="option-label">Anal</span></label>
+              <label class="option"><input type="checkbox" name="preference" value="trios" /><span class="option-box"></span><span class="option-label">Trios</span></label>
+            </div>
+          </div>
+
+          <div class="filter-group age-group">
+            <div class="group-title">Edad (máx)</div>
+            <div class="age-inputs">
+              <input id="filter-max-age" type="number" min="18" placeholder="máx" />
+            </div>
           </div>
         </div>
       </section>

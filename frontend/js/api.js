@@ -1,3 +1,9 @@
+/**
+ * api.js — capa de acceso a datos (mock/local)
+ * - `getProfiles()` devuelve datos de ejemplo para desarrollo frontend.
+ * - `fetchProfilesFromServer()` demuestra como consumir un endpoint real.
+ */
+
 export async function getProfiles() {
   // Mock data for frontend development (id, alias, age, city, tags, photos, description)
   return [

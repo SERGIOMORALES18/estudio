@@ -4,7 +4,11 @@ Breve guía para el frontend estático de Velvet Club.
 
 Estructura:
 - `index.html` - página principal.
-- `css/styles.css` - estilos y animaciones.
+- `css/base.css` - variables y estilos globales (reset, fondo).
+- `css/layout.css` - header, hero y estructura principal.
+- `css/components.css` - tarjetas, filtros y componentes específicos.
+- `css/animations.css` - keyframes y animaciones decorativas.
+- `css/footer.css` - estilos del pie de página.
 - `js/api.js` - funciones para consumir la API (actualmente mocks).
 - `js/animations.js` - helpers para la animación de tarjetas "caen desde arriba".
 - `js/app.js` - lógica de renderizado y modal.

@@ -1,0 +1,151 @@
+/*
+  components.css — secciones de perfil, filtros y tarjetas
+*/
+
+/* Valor global para el ancho del sidebar; usado por el panel
+   y por las reglas que desplazan el contenido (transform). */
+:root{ --filters-width: 340px; }
+
+.profiles-section{ position: relative; padding: 2.4rem 1.2rem; max-width:1300px; margin:0 auto }
+.falling-area{ position: absolute; inset:0; pointer-events:none }
+
+.profiles-grid{
+  display: grid; grid-template-columns: repeat(4, 1fr); gap:1.4rem;
+  position: relative; z-index: 3; align-items: start; width:100%;
+}
+
+.filters-section{ max-width:1300px; margin: 0 auto; padding: 0 1.2rem 1rem }
+.filters-bar{
+  display:flex; gap:1rem; align-items:end; background: transparent; padding: .6rem; border-radius:10px;
+}
+.filter-item{ display:flex; flex-direction:column; color:var(--muted); font-size:0.95rem }
+.filter-item label{ font-weight:700; color:#fff; margin-bottom:0.25rem }
+.filter-item select, .filter-item input{ background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); color:#fff; padding:.4rem .6rem; border-radius:8px }
+.age-range .age-inputs{ display:flex; align-items:center; gap:.4rem }
+.age-range input{ width:70px }
+.filter-actions{ margin-left:auto }
+.btn-reset{ background: linear-gradient(180deg,#5a2a2a,#3d1515); border:none; color:#ffd9b0; padding:.5rem .8rem; border-radius:8px; cursor:pointer }
+.btn-reset:hover{ filter:brightness(1.06) }
+
+.filter-toggle{
+  background: linear-gradient(180deg,#8b2b2b,#5a0c0c);
+  color: #fff; border: none; padding: .6rem .9rem; border-radius:10px; font-weight:800; cursor:pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+.filters-panel{ display:none; background: rgba(8,8,8,0.62); padding: .8rem; border-radius:10px; border:1px solid rgba(255,255,255,0.03); z-index:50; backdrop-filter: blur(6px) }
+/* Eliminado el comportamiento "dropdown" para evitar que el panel
+   participe del flujo y empuje el contenido hacia abajo. El panel debe
+   mostrarse siempre como modal/fixed (lado derecho). */
+
+/* -- Sidebar / filters behaviour --
+   We expose a CSS variable for the sidebar width so the same value
+   is used for the panel itself and for the content-shift animation.
+*/
+.filters-panel.modal{
+  /* Aseguramos que la variante modal sea block-level y quede fuera del flujo */
+  display:block;
+  position: fixed;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: var(--filters-width);
+  max-width: 92%;
+  transform: translateX(100%);
+  transition: transform .28s ease, opacity .18s ease;
+  opacity: 0.98;
+  border-radius: 8px 0 0 8px;
+  padding: 1rem;
+  box-shadow: -18px 40px 60px rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 60;
+}
+
+.filters-panel.modal.open{ transform: translateX(0); }
+
+/* Overlay: cuando el sidebar está abierto añadimos una capa intermedia
+   que oscurece el contenido y evita interacción directa. */
+body.filters-open::before{
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 55;
+  pointer-events: auto;
+  transition: opacity .28s ease;
+  opacity: 1;
+}
+
+/* Aseguramos una animación suave en los principales contenedores. */
+/* Añadimos `padding-right` a la lista de propiedades animadas para
+  que los cambios de espacio cuando se abre el sidebar sean suaves. */
+main, .site-header, .site-footer, .profiles-section{ transition: transform .28s ease, filter .28s ease, padding-right .28s ease; }
+
+/* Cuando el sidebar está abierto aplicamos un ligero desplazamiento y
+   reductores visuales: blur/oscurecimiento. El desplazamiento se hace
+   sobre el contenido central para mantener el sidebar fijo a la derecha. */
+/* Cuando el sidebar está abierto, en vez de desplazar (translate)
+   hacemos que el contenido reserve espacio a la derecha mediante
+   `padding-right`, de modo que el panel fijo no oculte las tarjetas. */
+body.filters-open main,
+body.filters-open .site-header,
+body.filters-open .site-footer,
+body.filters-open .profiles-section{
+  transform: none; /* evitamos desplazamientos que ocultan contenido */
+  padding-right: var(--filters-width);
+  filter: brightness(.92) saturate(.9);
+}
+
+/* Small screens: overlay completo, no empujar contenido */
+@media (max-width:700px){
+  :root{ --filters-width: 100vw; }
+  .filters-panel.modal{ width: 100vw; border-radius: 0; }
+  body.filters-open main,
+  body.filters-open .site-header,
+  body.filters-open .site-footer,
+  body.filters-open .profiles-section{ transform: none; }
+}
+
+.filter-group{ margin-bottom:.6rem }
+.group-title{ color:#ffd9b0; font-weight:700; margin-bottom:.45rem }
+.options-row{ display:flex; gap:.6rem; flex-wrap:wrap }
+.option{ display:inline-flex; align-items:center; gap:.5rem; background: rgba(255,255,255,0.03); padding:.32rem .5rem; border-radius:8px; border:1px solid rgba(255,255,255,0.03); cursor:pointer }
+.option input{ display:none }
+.option .option-box{ width:18px; height:18px; border-radius:4px; background: rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.06); display:inline-block; position:relative }
+.option input:checked + .option-box{ background: linear-gradient(180deg,#ffd27a,#e0a83a); border-color: #e0a83a }
+.option .option-label{ color:#fff; font-weight:600 }
+
+/* Media queries moved to `responsive.css` */
+
+.filters-open .falling{
+  opacity: 0.16;
+  pointer-events: none;
+  filter: blur(2px) grayscale(0.6);
+}
+
+/* Tarjetas */
+.profile-card{
+  width: 100%; height: 380px; perspective: 1200px; border-radius:12px; overflow: visible;
+  padding: 0; transition: transform .18s ease; cursor: pointer;
+  position: relative; z-index: 2; background: var(--card-bg); backdrop-filter: blur(6px); box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
+.profile-card:hover{ transform: translateY(-6px); z-index: 20 }
+
+.profile-photo{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 12px; display: block; padding: 0; box-sizing: border-box; background: transparent; z-index: 1 }
+
+.profile-card .card-inner{ position: relative; width:100%; height:100%; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(.2,.9,.2,1); border-radius:12px }
+.profile-card.is-flipped .card-inner{ transform: rotateY(180deg) }
+
+.card-front, .card-back{ position:absolute; inset:0; border-radius:12px; backface-visibility: hidden; overflow:hidden }
+.card-front{ display:flex; flex-direction:column; background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.25)); z-index: 3 }
+.card-back{ transform: rotateY(180deg); display:flex; align-items:center; justify-content:center; padding:1rem; background: linear-gradient(180deg, rgba(15,11,11,0.9), rgba(0,0,0,0.95)); z-index: 4 }
+
+.meta-overlay{ position:absolute; left:0; right:0; bottom:0; padding:1rem; background: linear-gradient(180deg, transparent, rgba(0,0,0,0.82)); display:flex; flex-direction:column; align-items:flex-start; transform: translateY(100%); opacity: 0; pointer-events: none; transition: transform .22s ease, opacity .22s ease; z-index: 6 }
+.profile-card:hover .meta-overlay{ transform: translateY(0); opacity: 1; pointer-events: auto }
+.meta-overlay .name-age{ color:#fff; font-weight:700; margin:0; font-size:1.08rem }
+.meta-overlay .meta-details{ color: var(--muted); font-size:.95rem; margin-top:0.35rem }
+
+.back-content{ color:#fff; text-align:left }
+.back-content .description{ font-size:1rem; color:#f3f1f0; margin-bottom:1rem; max-height:200px; overflow:auto; padding-right:0.25rem }
+.btn-more{ background: linear-gradient(180deg,#ffd27a,#e0a83a); border:none; padding:.5rem .8rem; border-radius:8px; color:#3b2a12; font-weight:700; cursor:pointer }
+
+/* Responsive grid rules moved to `responsive.css` */
