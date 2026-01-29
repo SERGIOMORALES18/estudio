@@ -33,6 +33,71 @@
   box-shadow: 0 6px 18px rgba(0,0,0,0.45);
 }
 .filters-panel{ display:none; background: rgba(8,8,8,0.62); padding: .8rem; border-radius:10px; border:1px solid rgba(255,255,255,0.03); z-index:50; backdrop-filter: blur(6px) }
+/* Inline/open variant: show filters in the document flow instead of a right-side modal */
+.filters-panel.open{
+  display: flex;
+  position: static;
+  transform: none;
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  opacity: 1;
+  padding: 1rem 1.2rem;
+  margin-top: .8rem;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+  border-radius: 12px;
+  gap: 1.2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* Layout of each filter group when the panel is horizontal */
+.filters-panel.open .filter-group{
+  flex: 1 1 300px;
+  min-width: 240px;
+  background: transparent;
+  margin: 0;
+}
+
+.filters-panel.open .group-title{ margin-bottom: .6rem }
+
+/* Make options row wrap horizontally within each group */
+.filters-panel.open .options-row{ display:flex; gap:.8rem; flex-wrap:wrap }
+
+/* Ensure filter title and panel look good */
+.filters-bar{ display:flex; align-items:center; gap:1rem }
+.filter-title{ font-size: 1.05rem; padding:.6rem .95rem }
+
+/* Range control full width within its group */
+.filters-panel.open .age-inputs{ display:flex; align-items:center; gap:.9rem }
+.filters-panel.open .age-inputs input[type="range"]{ width: 220px }
+
+/* On narrow screens stack vertically */
+@media (max-width:700px){
+  /* Mobile: stack filters vertically but keep static layout (no internal scroll) */
+  .filters-panel.open{ flex-direction: column; padding: .6rem; max-height: none; overflow: visible; }
+  .filters-panel.open .filter-group{ width:100%; min-width:0 }
+  .filter-title{ align-self:flex-start; font-size:1rem }
+  .filters-panel.open .age-inputs input[type="range"]{ width: 140px }
+  /* Ensure profiles are visible below the filters on small screens */
+  .profiles-section{ margin-top: 1rem }
+
+  /* Neutralize any body.filters-open overlay/padding on small screens */
+  body.filters-open::before{ display:none }
+  body.filters-open main,
+  body.filters-open .site-header,
+  body.filters-open .site-footer,
+  body.filters-open .profiles-section{ padding-right: 0 }
+}
+
+/* Title replacing the toggle button */
+.filter-title{ display:inline-block; background: linear-gradient(180deg,#8b2b2b,#5a0c0c); color:#fff; padding:.55rem .9rem; border-radius:10px; font-weight:800; box-shadow: 0 6px 18px rgba(0,0,0,0.45); }
+
+/* Range control styling */
+.age-inputs{ display:flex; align-items:center; gap:.8rem }
+.age-inputs input[type="range"]{ -webkit-appearance: none; width:220px; height:6px; background: linear-gradient(90deg,#ffd27a,#c31a1a); border-radius:6px; outline:none }
+.age-inputs input[type="range"]::-webkit-slider-thumb{ -webkit-appearance: none; width:18px; height:18px; background:#fff; border-radius:50%; box-shadow:0 2px 8px rgba(0,0,0,0.6) }
+.age-inputs output{ color:#ffd9b0; font-weight:700; min-width:36px; text-align:center }
 /* Eliminado el comportamiento "dropdown" para evitar que el panel
    participe del flujo y empuje el contenido hacia abajo. El panel debe
    mostrarse siempre como modal/fixed (lado derecho). */

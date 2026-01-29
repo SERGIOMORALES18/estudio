@@ -15,7 +15,8 @@ export function initFilters(profiles, gridElement) {
   allProfiles = Array.isArray(profiles) ? profiles.slice() : [];
   filtersPanel = document.querySelector('.filters-panel');
   filterToggle = document.getElementById('filter-toggle');
-  filterMaxAge = document.getElementById('filter-max-age');
+  filterMaxAge = document.getElementById('filter-age-range');
+  const filterAgeValue = document.getElementById('filter-age-value');
 
   // Inicial: render con todos los perfiles
   renderProfiles(allProfiles, gridElement);
@@ -31,7 +32,14 @@ export function initFilters(profiles, gridElement) {
 
   // Delegación: aplicar filtros cuando cambian inputs
   if (filtersPanel) filtersPanel.addEventListener('change', () => applyFilters(gridElement));
-  if (filterMaxAge) filterMaxAge.addEventListener('input', () => applyFilters(gridElement));
+  if (filterMaxAge) {
+    filterMaxAge.addEventListener('input', (ev) => {
+      if (filterAgeValue) filterAgeValue.textContent = ev.target.value;
+      applyFilters(gridElement);
+    });
+    // initialize displayed value
+    if (filterAgeValue) filterAgeValue.textContent = filterMaxAge.value;
+  }
 }
 
 function populateFilters(/*profiles*/) {
@@ -100,15 +108,12 @@ function onEscClose(ev){ if (ev.key === 'Escape') closeFilters(); }
 
 function openFilters(){
   if (!filtersPanel) return;
-  filtersPanel.classList.add('modal');
-  setTimeout(()=>{
-    filtersPanel.classList.add('open');
-    filtersPanel.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('sidebar-open','filters-open');
-    addCloseListeners();
-    if (filterToggle) filterToggle.textContent = 'Menú de apuestas ▴';
-    setTimeout(()=>{ filtersPanel.querySelector('input,button,select')?.focus(); }, 80);
-  }, 8);
+  // Show filters inline (no sidebar/modal). This keeps the panel in the document flow
+  // so users can click checkboxes directly and the filtering logic (delegation)
+  // continues to work as before.
+  filtersPanel.classList.add('open');
+  filtersPanel.setAttribute('aria-hidden', 'false');
+  if (filterToggle) filterToggle.textContent = 'Menú de apuestas ▴';
 }
 
 function closeFilters(){
@@ -116,28 +121,15 @@ function closeFilters(){
   filtersPanel.classList.remove('open');
   filtersPanel.setAttribute('aria-hidden', 'true');
   if (filterToggle) filterToggle.textContent = 'Menú de apuestas ▾';
-  document.body.classList.remove('sidebar-open','filters-open');
-
-  const onEnd = (ev) => {
-    if (ev && ev.target !== filtersPanel) return;
-    filtersPanel.classList.remove('modal');
-    removeCloseListeners();
-    filtersPanel.removeEventListener('transitionend', onEnd);
-  };
-
-  filtersPanel.addEventListener('transitionend', onEnd);
-  setTimeout(()=>{
-    if (filtersPanel.classList.contains('modal')){
-      filtersPanel.classList.remove('modal');
-      removeCloseListeners();
-      filtersPanel.removeEventListener('transitionend', onEnd);
-    }
-  }, 480);
 }
 
 export function resetFilters(){
   document.querySelectorAll('#filters input[type="checkbox"]').forEach(i => i.checked = false);
-  if (filterMaxAge) filterMaxAge.value = '';
+  if (filterMaxAge) {
+    // reset to no upper-limit default (set to max value)
+    filterMaxAge.value = filterMaxAge.max || 45;
+    document.getElementById('filter-age-value').textContent = filterMaxAge.value;
+  }
   // re-render con todos
   renderProfiles(allProfiles, document.getElementById('profiles-grid'));
 }

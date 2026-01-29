@@ -1,0 +1,15 @@
+{
+  "name": "velvet-root",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Root helper package.json to run backend with `npm start`",
+  "scripts": {
+    "start": "concurrently \"npm --prefix backend start\" \"wait-on http://localhost:3000 && start http://localhost:3000\"",
+    "start:backend": "npm --prefix backend start",
+    "dev:backend": "npm --prefix backend run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "wait-on": "^7.0.1"
+  }
+}

@@ -34,19 +34,19 @@
         </div>
         <div class="hero-content">
           <h1 class="hero-title"><span class="velvet">Velvet</span> <span class="club">Club</span></h1>
-          <p class="subtitle">Apuesta por tu mejor compania</p>
+          <p class="subtitle">Apuesta por la mejor compania</p>
         </div>
       </section>
 
       <!-- Menú de apuestas: botón que abre el panel de filtros (opciones como cuadros seleccionables) -->
       <section id="filters" class="filters-section">
         <div class="filters-bar">
-          <button id="filter-toggle" class="filter-toggle">Menú de apuestas ▾</button>
+          <h2 class="filter-title">Menú de apuestas</h2>
 
-          <!-- acciones del filtro (reset eliminado porque no era funcional) -->
+          <!-- acciones del filtro (visibles siempre; no es un sidebar) -->
         </div>
 
-        <div class="filters-panel" aria-hidden="true">
+        <div class="filters-panel open" aria-hidden="false">
           <div class="filter-group">
             <div class="group-title">Senos</div>
             <div class="options-row">
@@ -92,7 +92,8 @@
           <div class="filter-group age-group">
             <div class="group-title">Edad (máx)</div>
             <div class="age-inputs">
-              <input id="filter-max-age" type="number" min="18" placeholder="máx" />
+              <input id="filter-age-range" type="range" min="18" max="45" value="45" />
+              <output id="filter-age-value">45</output>
             </div>
           </div>
         </div>

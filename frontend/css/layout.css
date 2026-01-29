@@ -6,7 +6,7 @@
   display:flex; justify-content:space-between; align-items:center; padding:1rem 2rem;
   background: transparent;
 }
-.logo{ font-weight:700; font-size:1.4rem; color:var(--red); letter-spacing:1px }
+.logo{ font-weight:700; font-size:1.9rem; color:var(--red); letter-spacing:1px }
 .top-nav a{ color:var(--muted); margin-left:1rem; text-decoration:none }
 
 .logo .brand{ display:inline-block }
@@ -16,10 +16,10 @@
   -webkit-background-clip: text; background-clip: text; color: transparent;
   -webkit-text-stroke: 1px rgba(15,7,7,0.7);
   text-shadow: 0 2px 6px rgba(0,0,0,0.45);
-  letter-spacing:1px; display:inline-block; font-size:1.4rem;
+  letter-spacing:1px; display:inline-block; font-size:2.2rem;
 }
 .logo .club{
-  font-family: 'Great Vibes', cursive; font-style: italic; color: #f5d9b0; font-size:1.2rem; margin-left:0.2rem;
+  font-family: 'Great Vibes', cursive; font-style: italic; color: #f5d9b0; font-size:1.5rem; margin-left:0.25rem;
 }
 
 .hero{
@@ -30,7 +30,9 @@
 
 .hero-title .velvet{
   font-family: 'Bebas Neue', Impact, Arial, sans-serif; font-weight:900; display:block;
-  font-size: 7.6rem; letter-spacing:3px; position:relative; padding:0 0.12rem;
+  /* Responsive hero title: grows on large screens, shrinks on small devices */
+  font-size: clamp(3.2rem, 6vw + 2rem, 9.6rem);
+  letter-spacing:3px; position:relative; padding:0 0.12rem;
   -webkit-background-clip:text; background-clip:text; color:transparent;
   -webkit-text-stroke: 2.6px rgba(0,0,0,0.75);
   background-image:
@@ -60,7 +62,7 @@
 
 .hero-title .club{
   position: absolute; left:50%; transform:translateX(-50%); top:52%; z-index:10; display:inline-block;
-  font-family: 'Great Vibes', cursive; font-size:4.6rem; line-height:1; padding:0.06rem 0.5rem;
+  font-family: 'Great Vibes', cursive; font-size: clamp(1.8rem, 3.6vw + 1rem, 5.8rem); line-height:1; padding:0.06rem 0.5rem;
   -webkit-background-clip:text; background-clip:text; color:transparent;
   -webkit-text-stroke: 0.9px #cfa33a; text-shadow: 0 6px 14px rgba(180,120,50,0.6);
 }
