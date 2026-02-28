@@ -58,13 +58,15 @@
 
 .filter-title { 
   display: inline-block;
-  font-size: 1.05rem; 
-  padding: 0.55rem 0.9rem;
-  background: linear-gradient(180deg, #8b2b2b, #5a0c0c); 
-  color: #fff; 
+  font-size: 1.4rem; 
+  padding: 0.75rem 1.2rem;
+  background: var(--accent);
+  color: #000; 
   border-radius: 10px; 
   font-weight: 800; 
-  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  box-shadow: 0 6px 18px rgba(255,215,0,0.45);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* Panel de filtros: layout horizontal (siempre visible en el flujo) */
@@ -73,17 +75,18 @@
   position: static;
   transform: none;
   width: 100%;
-  max-width: 1200px;
+  max-width: 800px;
   height: auto;
   opacity: 1;
   padding: 1rem 1.2rem;
   margin-top: 0.8rem;
-  background: rgba(8,8,8,0.62);
-  border: 1px solid rgba(255,255,255,0.03);
+  /* un tono purpura profundo para diferenciar del fondo rojizo */
+  background: rgba(75,0,75,0.6);
+  border: 1px solid rgba(255,215,0,0.4);
   border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
-  gap: 1.2rem;
-  align-items: flex-start;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  gap: 1rem;
+  align-items: center;
   flex-wrap: wrap;
   z-index: 50;
   backdrop-filter: blur(6px);
@@ -91,16 +94,50 @@
 
 /* ========== GRUPOS DE FILTROS Y OPCIONES ========== */
 .filter-group { 
-  flex: 1 1 300px;
-  min-width: 240px;
+  flex: 1 1 250px;
+  min-width: 200px;
   background: transparent;
-  margin: 0 0 0.6rem 0;
+  margin: 0 0 1rem 0;
+}
+
+/* Selects personalizados para el menú de apuestas */
+.filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(0,0,0,0.4);
+  border: 2px solid var(--accent);
+  color: #ffd9b0;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  min-width: 130px;
+  position: relative;
+  cursor: pointer;
+}
+.filter-select option {
+  background: #2a1018;
+  color: #ffd9b0;
+}
+.filter-toggle {
+  background: transparent;
+  border: none;
+  color: #ffd9b0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: auto;
+  transition: transform 0.2s ease;
+}
+.filter-toggle.open {
+  transform: rotate(180deg);
 }
 
 .group-title { 
-  color: #ffd9b0; 
+  color: var(--accent); 
   font-weight: 700; 
   margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 1rem;
 }
 
 .options-row { 
@@ -111,15 +148,23 @@
 
 /* Individ checkbox styling */
 .option { 
-  display: inline-flex; 
-  align-items: center; 
-  gap: 0.5rem; 
-  background: rgba(255,255,255,0.03); 
-  padding: 0.32rem 0.5rem; 
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem; 
   border-radius: 8px; 
-  border: 1px solid rgba(255,255,255,0.03); 
+  border: 2px solid var(--accent); 
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
+  background: rgba(255,215,0,0.08);
+  font-weight: 600;
+}
+
+.option:hover {
+  background: rgba(255,215,0,0.25);
+  border: 2px solid #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .option input { 
@@ -131,10 +176,11 @@
   height: 18px; 
   border-radius: 4px; 
   background: rgba(0,0,0,0.2); 
-  border: 1px solid rgba(255,255,255,0.06); 
+  border: 2px solid var(--accent); 
   display: inline-block; 
   position: relative;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .option input:checked + .option-box { 
@@ -143,7 +189,7 @@
 }
 
 .option .option-label { 
-  color: #fff; 
+  color: #e8dcc8; 
   font-weight: 600;
 }
 
@@ -158,7 +204,7 @@
   -webkit-appearance: none;
   width: 220px; 
   height: 6px; 
-  background: linear-gradient(90deg, #ffd27a, #c31a1a); 
+  background: linear-gradient(90deg, var(--accent), #c31a1a); 
   border-radius: 6px; 
   outline: none;
   cursor: pointer;
@@ -185,7 +231,7 @@
 }
 
 .age-inputs output { 
-  color: #ffd9b0; 
+  color: var(--accent); 
   font-weight: 700; 
   min-width: 36px; 
   text-align: center;
@@ -199,14 +245,48 @@
   border-radius: 12px; 
   overflow: visible;
   padding: 0; 
-  transition: transform 0.18s ease; 
+  transition: transform 0.18s ease, box-shadow 0.3s ease; 
   cursor: pointer;
   position: relative; 
   z-index: 2; 
   background: var(--card-bg); 
   backdrop-filter: blur(6px); 
-  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  /* subtle shadow for elegance */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
+
+/* badges inside card */
+.card-badges {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+}
+.card-badges .badge {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #ffd27a;
+  text-shadow: 0 0 2px rgba(0,0,0,0.6);
+}
+
+.profile-card::before,
+.profile-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(195,26,26,0.3), rgba(255,210,122,0.3));
+}
+.profile-card::before { top: 0; }
+.profile-card::after { bottom: 0; }
+
 
 .profile-card:hover { 
   transform: translateY(-6px); 

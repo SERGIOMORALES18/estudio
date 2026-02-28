@@ -39,9 +39,21 @@ export function createCard(profile) {
   card.dataset.id = profile.id;
   card.setAttribute('tabindex', '0');
 
+  // determine badges (heart, diamond, whiteheart) mapping
+  const ICON_MAP = {
+    heart: '♥',
+    diamond: '♦',
+    whiteheart: '♡'
+  };
+  const badgesHTML = (profile.badges || []).map(b => {
+    const icon = ICON_MAP[b] || '';
+    return icon ? `<span class="badge">${icon}</span>` : '';
+  }).join('');
+
   card.innerHTML = `
     <div class="card-inner">
       <div class="card-front">
+        ${badgesHTML ? `<div class="card-badges">${badgesHTML}</div>` : ''}
         <img 
           class="profile-photo" 
           src="${profile.photos?.[0] || ''}" 

@@ -18,9 +18,7 @@
     <header class="site-header">
       <div class="logo"><span class="brand"><span class="velvet">Velvet</span> <span class="club">Club</span></span></div>
       <nav class="top-nav">
-        <a href="#profiles">Perfiles</a>
-        <a href="#about">Sobre</a>
-        <a href="#contact">Contacto</a>
+        <a href="login.html" class="btn-login">Iniciar Sesión</a>
       </nav>
     </header>
 
@@ -38,64 +36,41 @@
         </div>
       </section>
 
-      <!-- Menú de apuestas: botón que abre el panel de filtros (opciones como cuadros seleccionables) -->
+      <!-- Menú de apuestas: estilo dropdown similar a la imagen de referencia -->
       <section id="filters" class="filters-section">
         <div class="filters-bar">
           <h2 class="filter-title">Menú de apuestas</h2>
-
-          <!-- acciones del filtro (visibles siempre; no es un sidebar) -->
+          <button id="filter-toggle" class="filter-toggle" aria-label="Mostrar filtros">▼</button>
         </div>
 
         <div class="filters-panel open" aria-hidden="false">
-          <div class="filter-group">
-            <div class="group-title">Senos</div>
-            <div class="options-row">
-              <label class="option">
-                <input type="checkbox" name="breast" value="grandes" />
-                <span class="option-box"></span>
-                <span class="option-label">Grandes</span>
-              </label>
-              <label class="option">
-                <input type="checkbox" name="breast" value="pequeños" />
-                <span class="option-box"></span>
-                <span class="option-label">Pequeños</span>
-              </label>
-            </div>
-          </div>
+          <select id="filter-breast" class="filter-select">
+            <option value="">Senos</option>
+            <option value="grandes">Grandes</option>
+            <option value="pequeños">Pequeños</option>
+          </select>
 
-          <div class="filter-group">
-            <div class="group-title">Cola</div>
-            <div class="options-row">
-              <label class="option">
-                <input type="checkbox" name="butt" value="grande" />
-                <span class="option-box"></span>
-                <span class="option-label">Grande</span>
-              </label>
-              <label class="option">
-                <input type="checkbox" name="butt" value="pequeña" />
-                <span class="option-box"></span>
-                <span class="option-label">Pequeña</span>
-              </label>
-            </div>
-          </div>
+          <select id="filter-butt" class="filter-select">
+            <option value="">Cola</option>
+            <option value="grande">Grande</option>
+            <option value="pequeña">Pequeña</option>
+          </select>
 
-          <div class="filter-group">
-            <div class="group-title">Preferencias</div>
-            <div class="options-row" id="filter-preference-list">
-              <!-- Preferencias fijas: Horario nocturno, Anal, Trios -->
-              <label class="option"><input type="checkbox" name="preference" value="horario nocturno" /><span class="option-box"></span><span class="option-label">Horario nocturno</span></label>
-              <label class="option"><input type="checkbox" name="preference" value="anal" /><span class="option-box"></span><span class="option-label">Anal</span></label>
-              <label class="option"><input type="checkbox" name="preference" value="trios" /><span class="option-box"></span><span class="option-label">Trios</span></label>
-            </div>
-          </div>
+          <select id="filter-pref" class="filter-select">
+            <option value="">Preferencias</option>
+            <option value="horario nocturno">Horario nocturno</option>
+            <option value="anal">Anal</option>
+            <option value="trios">Trios</option>
+          </select>
 
-          <div class="filter-group age-group">
-            <div class="group-title">Edad (máx)</div>
-            <div class="age-inputs">
-              <input id="filter-age-range" type="range" min="18" max="45" value="45" />
-              <output id="filter-age-value">45</output>
-            </div>
-          </div>
+          <select id="filter-age" class="filter-select">
+            <option value="">Edad (máx)</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+            <option value="35">35</option>
+            <option value="40">40</option>
+            <option value="45">45</option>
+          </select>
         </div>
       </section>
 
@@ -110,16 +85,59 @@
 
     <footer class="site-footer">
       <div class="footer-inner">
+        <!-- Sección About + Contact -->
         <div class="footer-about">
-          <h3>Sobre Velvet Club</h3>
-          <p>Plataforma de perfiles con estilo exclusivo.</p>
+          <h3>Velvet Club</h3>
+          <p>Plataforma premium de perfiles y compañía exclusiva. Confort, discreción y profesionalismo garantizado.</p>
+          <div class="contact-info">
+            <div>
+              <div class="phone-label">Contacto directo</div>
+              <div class="phone-number">+57 320 322 6262</div>
+            </div>
+          </div>
         </div>
-        <div class="footer-links">
-          <small>&copy; Velvet Club</small>
-          <nav class="footer-nav" aria-label="Footer">
-            <a href="#profiles">Perfiles</a> · <a href="#contact">Contacto</a>
-          </nav>
+
+        <!-- Zonas de Cobertura -->
+        <div class="footer-section">
+          <h4>Zonas de Cobertura</h4>
+          <ul>
+            <li><a href="#">Bogotá</a></li>
+            <li><a href="#">Cali</a></li>
+            <li><a href="#">Medellín</a></li>
+            <li><a href="#">Cartagena</a></li>
+          </ul>
         </div>
+
+        <!-- Links de Interés -->
+        <div class="footer-section">
+          <h4>Información</h4>
+          <ul>
+            <li><a href="#">Sobre nosotros</a></li>
+            <li><a href="#">Políticas</a></li>
+            <li><a href="#">Privacidad</a></li>
+            <li><a href="#">Términos</a></li>
+          </ul>
+        </div>
+
+        <!-- Redes Sociales -->
+        <div class="footer-section">
+          <h4>Síguenos</h4>
+          <div class="social-icons">
+            <a href="#" title="Twitter">𝕏</a>
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="WhatsApp">💬</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          <small>&copy; 2025 Velvet Club. Todos los derechos reservados.</small>
+        </div>
+        <nav class="footer-nav" aria-label="Footer Navigation">
+          <a href="#profiles">Perfiles</a> · <a href="#about">Sobre</a> · <a href="#contact">Contacto</a> · <a href="#">Aviso Legal</a>
+        </nav>
       </div>
     </footer>
 

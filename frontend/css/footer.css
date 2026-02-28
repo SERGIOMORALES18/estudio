@@ -2,7 +2,13 @@
   ============================================================================
   footer.css — Estilos del pie de página
   ============================================================================
-  Estilos para el footer, enlaces y contenido informativo.
+  Diseño premium con fondo obscuro y estilo moderno tipo agencia
+  
+  Secciones:
+  - Contenido principal con información y contacto
+  - Zona de cobertura
+  - Links de interés
+  - Social media
   
   Cargar después de base.css y layout.css
   Media queries responsivas en responsive.css
@@ -13,81 +19,178 @@
 .site-footer {
   position: relative;
   z-index: 1;
-  padding: 1.6rem 1rem;
+  padding: 3.5rem 2rem 2rem;
   background: linear-gradient(
     180deg,
-    rgba(15,8,8,0.06),
-    rgba(0,0,0,0.12)
+    #3d1820,
+    #221011
   );
-  border-top: 1px solid rgba(255,255,255,0.03);
-  color: rgba(245,230,200,0.95);
-  text-align: center;
-  backdrop-filter: blur(4px);
+  /* eliminar borde fuerte, usar sombra sutil */
+  border-top: none;
+  color: #d4b5a0;
+  margin-top: 4rem;
+  box-shadow: inset 0 4px 12px rgba(0,0,0,0.4);
+
 }
 
-/* Contenedor interno del footer */
+/* Contenedor principal con grid */
 .site-footer .footer-inner {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr;
+  gap: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: none;
 }
 
-/* Texto de copyright */
-.site-footer small {
-  display: block;
-  opacity: 0.95;
-}
-
-/* Enlaces generales del footer */
-.site-footer a {
-  color: #f3d39a;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.site-footer a:hover {
-  color: #fff;
-}
-
-/* Sección About (información de Velvet Club) */
+/* ========== SECCIÓN DE ABOUT E INFO ========== */
 .footer-about {
-  color: rgba(245,230,200,0.95);
-  max-width: 700px;
+  color: #e8dcc8;
 }
 
 .footer-about h3 {
-  margin: 0 0 0.25rem;
-  font-size: 1rem;
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .footer-about p {
-  margin: 0;
-  color: rgba(245,230,200,0.92);
-  font-size: 0.95rem;
+  margin: 0 0 1.2rem 0;
+  color: #c0b0a0;
+  font-size: 0.9rem;
+  line-height: 1.6;
 }
 
-/* Sección de Links */
+.footer-about .contact-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.footer-about .phone-label {
+  font-size: 0.85rem;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-about .phone-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+}
+
+/* ========== SECCIÓN DE LINKS ========== */
 .footer-links {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 150px;
+}
+
+.footer-section h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: var(--accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-section a {
+  color: #c0b0a0;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.footer-section a:hover {
+  color: var(--accent);
+  padding-left: 0.3rem;
+}
+
+/* ========== NAVEGACIÓN PRINCIPAL DEL FOOTER ========== */
+
+/* opcional: separar sección inferior con línea tenue */
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); }
+.footer-nav {
+  color: #c0b0a0;
+}
+
+.footer-nav a {
+  color: #c0b0a0;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.footer-nav a:hover {
+  color: var(--accent);
+}
+
+/* ========== BARRA INFERIOR ========== */
+.footer-bottom {
+  padding-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.footer-copyright {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.social-icons {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-/* Navegación del footer */
-.footer-nav {
-  color: rgba(255,240,200,0.85);
-}
-
-.footer-nav a {
-  color: rgba(243,211,154,0.95);
+.social-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 4px;
   text-decoration: none;
-  margin: 0 0.45rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--accent);
 }
 
-.footer-nav a:hover {
-  text-decoration: underline;
+.social-icons a:hover {
+  background: transparent;
+  color: var(--accent);
+  transform: scale(1.1);
 }

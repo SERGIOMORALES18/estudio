@@ -44,10 +44,55 @@ export async function getProfiles() {
       alias:'Ana',
       age:25,
       city:'Bogotá',
+      availability: 'Sí',
+      englishLevel: 3, // 1-5 scale
+      experience: 'Moderada',
+      profession: 'Estudiante',
+      height: '165 cm',
+      build: 'Delgada',
+      bustType: 'Pequeño',
+      surgery: 'No',
+      skinColor: 'Trigueña',
+      hairColor: 'Castaño',
+      eyeColor: 'Marrones',
+      buttSize: 'Pequeña',
+      tattoos: 'Sí',
+      braces: 'No',
+      extras: ['Anal','Trios (con dos chicos)','Trios (con dos chicas)','Atención a mujeres','Squirt','Fetiche de pies','Roleplay'],
+      hobbies: 'Soy una <span class="highlight">Escort Delgada en Bogotá</span> alta y me encanta cómo se siente: me da seguridad, porte y ese toque elegante que se nota apenas entro 😊. De mi cara, amo mis labios: carnosos, expresivos, con esa forma de decir más de lo que hablo 💋. Mi cintura es chiquita y me encanta cómo marca mis curvas cuando camino; todo se ve y se siente en su lugar 💃. Tengo la piel suave (sí, de las que invitan a acercarse 😌) y una voz dulce que se queda en la cabeza 😏. Me gusta jugar con los detalles: una mirada sostenida, una sonrisa medio traviesa, el perfume justo y un "hola" bajito al oído 😘. Soy una Escort Delgada en Bogotá coqueta sin esfuerzo, cercana, con vibra rica y cero complicaciones 😌',
+      special: 'Soy cercana, coqueta y cero complicaciones; me encanta cómo se siente el momento.',
+      unique: 'Me encanta explorar sin prisa, provocar con una sonrisa y dejar que el juego se ponga intenso.',
+      price70: 470,
+      priceUnit: 'COP',
       tags:['VIP','Disponible'],
       photos:[
         'https://picsum.photos/id/1011/800/1200',
         'https://picsum.photos/id/1012/800/1200'
+      ],
+      description: 'Estudiante apasionada del arte. Amante de los cafés y las conversaciones profundas.',
+      reviews: [
+        {
+          author: 'Alejo Black',
+          presentation: 4,
+          attention: 3,
+          photoAccuracy: 4,
+          text: '<strong>Nos recomendarías?</strong> Sí!',
+          recommendationLabel: 'Nos recomendarías?',
+          recommendation: 'Sí!',
+          thumbsUp: 0,
+          thumbsDown: 0
+        },
+        {
+          author: 'Reservado#1',
+          presentation: 5,
+          attention: 5,
+          photoAccuracy: 5,
+          text: '<strong>¿Repetirías con ella?</strong> claro que sí!',
+          recommendationLabel: 'Repetirías con ella?',
+          recommendation: 'claro que sí!',
+          thumbsUp: 0,
+          thumbsDown: 0
+        }
       ]
     },
     {
@@ -55,12 +100,46 @@ export async function getProfiles() {
       alias:'Luna',
       age:28,
       city:'Medellín',
+      availability: 'No',
+      englishLevel: 2,
+      experience: 'Alta',
+      profession: 'Modelaje',
+      height: '170 cm',
+      build: 'Atlética',
+      bustType: 'Mediano',
+      surgery: 'Sí',
+      skinColor: 'Clara',
+      hairColor: 'Negro',
+      eyeColor: 'Verdes',
+      buttSize: 'Grande',
+      tattoos: 'No',
+      braces: 'No',
+      extras: ['Trios (con dos chicas)','Roleplay'],
+      hobbies: 'Bailar, viajar y descubrir nuevos sabores en la ciudad.',
+      special: 'Siempre dispuesta a complacer y sorprender.',
+      unique: 'Combina elegancia con una pizca de travesura.',
+      price70: 550,
+      priceUnit: 'COP',
       tags:['Premium','Horario nocturno'],
       photos:[
         'https://picsum.photos/id/1015/800/1200',
         'https://picsum.photos/id/1016/800/1200'
+      ],
+      description: 'Apasionada por la noche y las experiencias exclusivas.',
+      reviews: [
+        {
+          author: 'UsuarioX',
+          presentation: 5,
+          attention: 4,
+          photoAccuracy: 5,
+          text: 'Muy profesional y atenta.',
+          recommendationLabel: 'Nos recomendarías?',
+          recommendation: 'Claro',
+          thumbsUp: 1,
+          thumbsDown: 0
+        }
       ]
-    },
+    }, 
     {
       id:3,
       alias:'Sofia',
@@ -209,3 +288,9 @@ export async function fetchProfilesFromServer() {
     throw error;
   }
 }
+
+// objeto cliente para facilitar exportaciones
+export const apiClient = {
+  getProfiles,
+  fetchProfilesFromServer
+};

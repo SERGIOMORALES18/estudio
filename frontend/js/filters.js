@@ -48,12 +48,21 @@ export function initFilters(profiles, gridElement) {
   // Obtener referencias a elementos del DOM
   filtersPanel = document.querySelector('.filters-panel');
   filterToggle = document.getElementById('filter-toggle');
-  filterMaxAge = document.getElementById('filter-age-range');
-  const filterAgeValue = document.getElementById('filter-age-value');
+  // nuevos elementos select
+  filterMaxAge = document.getElementById('filter-age');
+  const filterBreast = document.getElementById('filter-breast');
+  const filterButt = document.getElementById('filter-butt');
+  const filterPref = document.getElementById('filter-pref');
+  // El valor del rango ya no se muestra, ahora usamos selects
+  const filterAgeValue = null;
 
   // ========== RENDER INICIAL ==========
   // Mostrar todos los perfiles al cargar
   renderProfiles(allProfiles, gridElement);
+  // si el panel ya viene abierto, marcar toggle
+  if (filterToggle && filtersPanel && filtersPanel.classList.contains('open')) {
+    filterToggle.classList.add('open');
+  }
 
   // ========== EVENT LISTENERS ==========
   // Toggle para abrir/cerrar panel de filtros (cuando exista)
@@ -74,20 +83,8 @@ export function initFilters(profiles, gridElement) {
     filtersPanel.addEventListener('change', () => applyFilters(gridElement));
   }
 
-  // Slider de edad máxima
-  if (filterMaxAge) {
-    filterMaxAge.addEventListener('input', (event) => {
-      if (filterAgeValue) {
-        filterAgeValue.textContent = event.target.value;
-      }
-      applyFilters(gridElement);
-    });
-    
-    // Inicializar valor mostrado
-    if (filterAgeValue) {
-      filterAgeValue.textContent = filterMaxAge.value;
-    }
-  }
+  // el select de edad y demás triggers están manejados por el listener general de `change` arriba
+  // así que no necesitamos un manejador separado aquí.
 }
 
 /**
@@ -103,39 +100,22 @@ function applyFilters(gridElement) {
   let filtered = allProfiles.slice();
 
   // ========== LEER FILTROS SELECCIONADOS ==========
-  const selectedBreast = Array.from(
-    document.querySelectorAll('input[name="breast"]:checked')
-  ).map((input) => input.value);
-
-  const selectedButt = Array.from(
-    document.querySelectorAll('input[name="butt"]:checked')
-  ).map((input) => input.value);
-
-  const selectedPref = Array.from(
-    document.querySelectorAll('input[name="preference"]:checked')
-  ).map((input) => input.value);
-
-  const maxAge = filterMaxAge && filterMaxAge.value 
-    ? Number(filterMaxAge.value) 
-    : null;
+  const selectedBreast = document.getElementById('filter-breast')?.value || '';
+  const selectedButt = document.getElementById('filter-butt')?.value || '';
+  const selectedPref = document.getElementById('filter-pref')?.value || '';
+  const maxAge = filterMaxAge && filterMaxAge.value ? Number(filterMaxAge.value) : null;
 
   // ========== APLICAR FILTROS ==========
-  if (selectedBreast.length) {
-    filtered = filtered.filter(
-      (profile) => selectedBreast.some((value) => matchBreast(profile, value))
-    );
+  if (selectedBreast) {
+    filtered = filtered.filter((profile) => matchBreast(profile, selectedBreast));
   }
 
-  if (selectedButt.length) {
-    filtered = filtered.filter(
-      (profile) => selectedButt.some((value) => matchButt(profile, value))
-    );
+  if (selectedButt) {
+    filtered = filtered.filter((profile) => matchButt(profile, selectedButt));
   }
 
-  if (selectedPref.length) {
-    filtered = filtered.filter(
-      (profile) => selectedPref.some((value) => matchPreference(profile, value))
-    );
+  if (selectedPref) {
+    filtered = filtered.filter((profile) => matchPreference(profile, selectedPref));
   }
 
   if (maxAge !== null) {
@@ -248,6 +228,7 @@ function openFilters() {
   
   if (filterToggle) {
     filterToggle.textContent = 'Menú de apuestas ▴';
+    filterToggle.classList.add('open');
   }
 
   addCloseListeners();
@@ -265,6 +246,7 @@ function closeFilters() {
   
   if (filterToggle) {
     filterToggle.textContent = 'Menú de apuestas ▾';
+    filterToggle.classList.remove('open');
   }
 
   removeCloseListeners();

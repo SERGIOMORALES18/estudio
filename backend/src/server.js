@@ -62,6 +62,32 @@ app.get('/api/profiles', (req, res) => {
   res.json(profiles);
 });
 
+// Create new profile
+app.post('/api/profiles', (req, res) => {
+  const newProfile = req.body;
+  newProfile.id = profiles.length ? profiles[profiles.length - 1].id + 1 : 1;
+  profiles.push(newProfile);
+  res.status(201).json(newProfile);
+});
+
+// Update existing profile
+app.put('/api/profiles/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const idx = profiles.findIndex(p => p.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Profile not found' });
+  profiles[idx] = { ...profiles[idx], ...req.body };
+  res.json(profiles[idx]);
+});
+
+// Delete profile
+app.delete('/api/profiles/:id', (req, res) => {
+  const id = Number(req.params.id);
+  const idx = profiles.findIndex(p => p.id === id);
+  if (idx === -1) return res.status(404).json({ error: 'Profile not found' });
+  const removed = profiles.splice(idx, 1)[0];
+  res.json(removed);
+});
+
 // Fallback to index.html for client-side routing
 app.get('*', (req, res) => {
   res.sendFile(path.join(frontendDir, 'index.html'));

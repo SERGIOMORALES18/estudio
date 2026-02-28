@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Administrador — Velvet Club</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Bebas+Neue&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/admin-styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="logo"><span class="brand"><span class="velvet">Velvet</span> <span class="club">Club</span></span></div>
+      <nav class="top-nav">
+        <a href="#" onclick="logout()">Cerrar Sesion</a>
+      </nav>
+    </header>
+
+    <main class="admin-main">
+      <!-- PANEL IZQUIERDO: LISTA DE PERFILES -->
+      <aside class="admin-sidebar">
+        <div class="sidebar-header">
+          <h2>Perfiles</h2>
+          <button id="btn-add-profile" class="btn-add-new" title="Crear nuevo perfil">+ Nuevo</button>
+        </div>
+        <div class="profiles-list-container" id="profiles-list">
+          <!-- Se llenan dinamicamente -->
+        </div>
+      </aside>
+
+      <!-- PANEL DERECHO: EDITOR EN TIEMPO REAL -->
+      <section class="admin-editor">
+        <div class="editor-header">
+          <h1 id="editor-title">Selecciona un perfil para editar</h1>
+          <p id="editor-subtitle" class="editor-subtitle"></p>
+        </div>
+
+        <div class="editor-content" id="editor-content" style="display: none;">
+          <!-- LADO IZQUIERDO: FORMULARIO -->
+          <div class="editor-form-panel">
+            <form id="profile-form" class="profile-form">
+              <input type="hidden" id="profile-id" />
+
+              <div class="form-section">
+                <h3>Informacion Basica</h3>
+                
+                <div class="form-group">
+                  <label>Alias:</label>
+                  <input type="text" id="form-alias" required />
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Edad:</label>
+                    <input type="number" id="form-age" min="18" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Ciudad:</label>
+                    <input type="text" id="form-city" required />
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3>Descripcion</h3>
+                <div class="form-group">
+                  <label>Descripcion:</label>
+                  <textarea id="form-description" rows="4" placeholder="Describe el perfil..."></textarea>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3>Tarifa</h3>
+                <div class="form-group">
+                  <label>Precio (70 min):</label>
+                  <input type="number" id="form-price" min="0" placeholder="0" />
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h3>Foto</h3>
+                <div class="form-group">
+                  <label>Foto Principal:</label>
+                  <input type="file" id="form-photo" accept="image/*" />
+                  <small>Formatos: JPG, PNG, GIF</small>
+                </div>
+                <div id="photo-upload-preview" class="photo-upload-preview"></div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-save">Guardar Cambios</button>
+                <button type="button" class="btn-cancel" onclick="clearEditor()">Cancelar</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- LADO DERECHO: PREVIEW -->
+          <div class="editor-preview-panel">
+            <h3>Vista Previa</h3>
+            <div class="preview-card" id="preview-card">
+              <div class="preview-image">
+                <div id="preview-photo" class="preview-photo">Foto</div>
+              </div>
+              <div class="preview-info">
+                <div class="preview-alias" id="preview-alias">Alias</div>
+                <div class="preview-details" id="preview-details">Edad anios</div>
+                <div class="preview-price" id="preview-price">-</div>
+                <div class="preview-description" id="preview-description">Descripcion</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="js/admin.js"></script>
+  </body>
+</html>

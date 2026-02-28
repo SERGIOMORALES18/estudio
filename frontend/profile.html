@@ -8,31 +8,81 @@
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/footer.css">
     <!-- Responsive rules should load last so they can override component styles -->
     <link rel="stylesheet" href="css/responsive.css">
+    <!-- fuentes personalizadas -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
   </head>
   <body>
-    <header class="site-header">
-      <div class="logo"><span class="brand"><span class="velvet">Velvet</span> <span class="club">Club</span></span></div>
-      <nav class="top-nav">
-        <a href="index.html">Inicio</a>
-        <a href="#">Perfiles</a>
-      </nav>
-    </header>
-
-    <main style="padding:2rem; max-width:1000px; margin:0 auto;">
-      <a href="index.html" style="display:inline-block;margin-bottom:1rem;color:#f3d39a;text-decoration:none">← Volver</a>
+    <main class="profile-main">
+      <!-- el enlace de regreso se genera dentro del hero para evitar duplicados -->
       <section id="profile-detail">
-        <!-- Content injected by js/profile.js -->
+        <!-- Contenido generado dinámicamente -->
       </section>
     </main>
 
+    <!-- Modal ligero para ampliar fotos -->
+    <div id="photo-modal" class="photo-modal" aria-hidden="true">
+      <span class="close-btn" aria-label="Cerrar">×</span>
+      <img src="" alt="Foto ampliada" />
+    </div>
+
     <footer class="site-footer">
       <div class="footer-inner">
-        <small>&copy; Velvet Club</small>
-        <nav class="footer-nav" aria-label="Footer">
-          <a href="#">Sobre</a> · <a href="#">Contacto</a>
+        <!-- Sección About + Contact -->
+        <div class="footer-about">
+          <h3>Velvet Club</h3>
+          <p>Plataforma premium de perfiles y compañía exclusiva. Confort, discreción y profesionalismo garantizado.</p>
+          <div class="contact-info">
+            <div>
+              <div class="phone-label">Contacto directo</div>
+              <div class="phone-number">+57 320 322 6262</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zonas de Cobertura -->
+        <div class="footer-section">
+          <h4>Zonas de Cobertura</h4>
+          <ul>
+            <li><a href="#">Bogotá</a></li>
+            <li><a href="#">Cali</a></li>
+            <li><a href="#">Medellín</a></li>
+            <li><a href="#">Cartagena</a></li>
+          </ul>
+        </div>
+
+        <!-- Links de Interés -->
+        <div class="footer-section">
+          <h4>Información</h4>
+          <ul>
+            <li><a href="#">Sobre nosotros</a></li>
+            <li><a href="#">Políticas</a></li>
+            <li><a href="#">Privacidad</a></li>
+            <li><a href="#">Términos</a></li>
+          </ul>
+        </div>
+
+        <!-- Redes Sociales -->
+        <div class="footer-section">
+          <h4>Síguenos</h4>
+          <div class="social-icons">
+            <a href="#" title="Twitter">𝕏</a>
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="WhatsApp">💬</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          <small>&copy; 2025 Velvet Club. Todos los derechos reservados.</small>
+        </div>
+        <nav class="footer-nav" aria-label="Footer Navigation">
+          <a href="index.html">Perfiles</a> · <a href="#">Sobre</a> · <a href="#">Contacto</a> · <a href="#">Aviso Legal</a>
         </nav>
       </div>
     </footer>

@@ -72,8 +72,8 @@ export function spawnFallingCard(container, profile) {
     scale(${randomBetween(0.86, 0.98)})
   `;
 
-  // Opacidad: 0.55-0.85 (semi-transparente)
-  element.style.opacity = String(randomBetween(0.55, 0.85));
+  // Opacidad: 0.3-0.6 (más sutil, no interrumpe lectura)
+  element.style.opacity = String(randomBetween(0.3, 0.6));
   element.style.zIndex = '1';
 
   // ========== AGREGAR AL DOM ==========

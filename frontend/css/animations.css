@@ -54,10 +54,10 @@
   position: fixed;
   top: 0;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0; /* detrás del contenido para no interrumpir lectura */
   transform: translateY(-120%);
   filter: blur(0.4px) saturate(0.95);
-  opacity: 0.82;
+  opacity: 0.5; /* menos opaco para no distraer */
   left: 0;
 }
 

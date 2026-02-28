@@ -16,55 +16,127 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background: transparent;
+  padding: 1.2rem 2rem;
+  background: linear-gradient(135deg, #551c2d, #3d1820);
+  border-bottom: 3px solid var(--accent);
+  box-shadow: 0 4px 12px rgba(255, 20, 147, 0.2);
 }
 
 .logo {
   font-weight: 700;
   font-size: 1.9rem;
-  color: var(--red);
   letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .logo .brand {
-  display: inline-block;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
 }
 
-/* Parte "Velvet" del logo: degradado dorado con efecto de brillo */
+/* Parte "Velvet" del logo: tono dorado/ámbar tipo casino, más cálido y sobrio */
 .logo .velvet {
   font-family: 'Bebas Neue', 'Oswald', Arial, sans-serif;
   font-weight: 700;
-  background: linear-gradient(180deg, #ffd86b, #ffb400, #c07b00);
+  background: linear-gradient(180deg, #ffa500, #ff8c00, #ffd27a);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(15,7,7,0.7);
-  text-shadow: 0 2px 6px rgba(0,0,0,0.45);
   letter-spacing: 1px;
   display: inline-block;
   font-size: 2.2rem;
+  text-transform: uppercase;
+  /* glow muy sutil */
+  animation: neonGlow 8s infinite alternate;
 }
 
-/* Parte "Club" del logo: fuente cursiva elegante */
+/* animación para simular un led/neón rojo-oro (más ténue) */
+@keyframes neonGlow {
+  from {
+    text-shadow:
+      0 0 2px rgba(255,165,0,0.4),
+      0 0 6px rgba(255,165,0,0.2),
+      0 0 12px rgba(255,210,122,0.2);
+  }
+  to {
+    text-shadow:
+      0 0 3px rgba(255,210,122,0.4),
+      0 0 8px rgba(255,210,122,0.2),
+      0 0 16px rgba(255,165,0,0.2);
+  }
+}
+
+/* Parte "Club" del logo: blanco elegante */
 .logo .club {
   font-family: 'Great Vibes', cursive;
   font-style: italic;
-  color: #f5d9b0;
+  color: #fff;
   font-size: 1.5rem;
-  margin-left: 0.25rem;
 }
 
 /* Navegación superior */
+.top-nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
 .top-nav a {
-  color: var(--muted);
-  margin-left: 1rem;
+  color: #e0d5c0;
+  margin: 0;
   text-decoration: none;
-  transition: color 0.2s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 .top-nav a:hover {
-  color: #f3d39a;
+  color: var(--accent);
+}
+
+.top-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.top-nav a:hover::after {
+  width: 100%;
+}
+
+/* Botón Iniciar Sesión */
+.btn-login {
+  padding: 0.7rem 1.8rem !important;
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-radius: 4px;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  font-size: 0.85rem !important;
+  transition: all 0.3s ease !important;
+  border: 2px solid var(--accent);
+}
+
+.btn-login:hover {
+  background: transparent !important;
+  color: var(--accent) !important;
+  transform: scale(1.05);
+}
+
+.btn-login::after {
+  display: none !important;
 }
 
 /* ========== HERO SECTION ========== */

@@ -19,6 +19,7 @@
   --red: #c31a1a;
   --muted: #bdb3b3;
   --card-bg: rgba(255,255,255,0.04);
+  --accent: #c9a961; /* oro mate clásico, no fluorescente */
 }
 
 /* ========== RESET CSS GLOBAL ========== */
