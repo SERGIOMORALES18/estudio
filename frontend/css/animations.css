@@ -1,20 +1,97 @@
 /*
-  animations.css — keyframes y estilos para elementos animados
+  ============================================================================
+  animations.css — Keyframes y estilos para animaciones
+  ============================================================================
+  Animaciones para:
+  - Flip múltiple de tarjetas (rotating cards)
+  - Caída de elementos decorativos (falling cards)
+  
+  Cargar después de los archivos base
+  ============================================================================
 */
 
-@keyframes clubShine{ 0%{ transform: skewX(-20deg) translateX(-120%); opacity:0 } 30%{ opacity:0.9 } 50%{ transform: skewX(-20deg) translateX(120%); opacity:0.9 } 100%{ transform: skewX(-20deg) translateX(260%); opacity:0 } }
-@keyframes shine{ 0%{ transform: skewX(-20deg) translateX(-120%); opacity:0 } 20%{ opacity:0.95 } 45%{ transform: skewX(-20deg) translateX(120%); opacity:0.98 } 100%{ transform: skewX(-20deg) translateX(240%); opacity:0 } }
-@keyframes sparkle{ 0%{ opacity:0.96 } 25%{ opacity:1 } 50%{ opacity:0.98 } 75%{ opacity:1 } 100%{ opacity:0.96 } }
-@keyframes starFlash{ 0%{ opacity:0; transform:scale(0.6) rotate(12deg) } 8%{ opacity:1; transform:scale(1.18) rotate(6deg) } 16%{ opacity:0.4 } 30%{ opacity:0 } 100%{ opacity:0 } }
+/* ========== ANIMACIONES DE FLIP CON ROTACIONES ========== */
+/* Rotación múltiple al voltear hacia atrás */
+@keyframes multiToBack {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(900deg); }
+}
 
-@keyframes multiToBack{ from{ transform: rotateY(0deg) } to{ transform: rotateY(900deg) } }
-@keyframes multiToFront{ from{ transform: rotateY(180deg) } to{ transform: rotateY(720deg) } }
-.card-inner.multiflip{ animation: multiToBack 1.05s cubic-bezier(.2,.9,.2,1) forwards }
-.card-inner.multiflip-back{ animation: multiToFront 1.05s cubic-bezier(.2,.9,.2,1) forwards }
+/* Rotación múltiple al voltear hacia adelante */
+@keyframes multiToFront {
+  from { transform: rotateY(180deg); }
+  to { transform: rotateY(720deg); }
+}
 
-@keyframes fallDown{ 0%{ transform: translateY(-120%) scale(.92); opacity:0 } 20%{ opacity:0.78 } 100%{ transform: translateY(110vh) scale(1); opacity:0.78 } }
-.falling{ position: fixed; top: 0; pointer-events: none; z-index: 1; transform: translateY(-120%); filter: blur(0.4px) saturate(0.95); opacity: 0.82; left: 0 }
-.falling .falling-card{ width:120px; border-radius:8px; overflow:hidden; background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.22)); border:1px solid rgba(255,255,255,0.03); box-shadow:0 6px 18px rgba(0,0,0,0.35); backdrop-filter: blur(2px) }
-.falling .falling-card img{ width:100%; height:84px; object-fit:cover; display:block; opacity:0.92 }
-.falling .falling-caption{ padding:.3rem .4rem; color:#fff; font-size:.86rem; background: linear-gradient(180deg, transparent, rgba(0,0,0,0.45)) }
-.falling.animate{ animation-name: fallDown; animation-timing-function: linear; animation-fill-mode: forwards }
+/* Aplicar animación de flip hacia atrás */
+.card-inner.multiflip {
+  animation: multiToBack 1.05s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+
+/* Aplicar animación de flip hacia adelante */
+.card-inner.multiflip-back {
+  animation: multiToFront 1.05s cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
+}
+
+/* ========== ANIMACIONES DE CAÍDA (FALLING DECORATIONS) ========== */
+/* Caída suave de elementos decorativos desde el top */
+@keyframes fallDown {
+  0% {
+    transform: translateY(-120%) scale(0.92);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.78;
+  }
+  100% {
+    transform: translateY(110vh) scale(1);
+    opacity: 0.78;
+  }
+}
+
+/* Contenedor de elementos que caen */
+.falling {
+  position: fixed;
+  top: 0;
+  pointer-events: none;
+  z-index: 1;
+  transform: translateY(-120%);
+  filter: blur(0.4px) saturate(0.95);
+  opacity: 0.82;
+  left: 0;
+}
+
+/* Tarjeta individual que cae */
+.falling .falling-card {
+  width: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.22));
+  border: 1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  backdrop-filter: blur(2px);
+}
+
+/* Imagen dentro de la tarjeta que cae */
+.falling .falling-card img {
+  width: 100%;
+  height: 84px;
+  object-fit: cover;
+  display: block;
+  opacity: 0.92;
+}
+
+/* Caption bajo la imagen */
+.falling .falling-caption {
+  padding: 0.3rem 0.4rem;
+  color: #fff;
+  font-size: 0.86rem;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.45));
+}
+
+/* Activar animación de caída */
+.falling.animate {
+  animation-name: fallDown;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}

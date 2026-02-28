@@ -1,35 +1,154 @@
 /*
-  responsive.css — Consolidación de media queries
-  Todas las consultas de respuesta del proyecto están centralizadas aquí.
-  Cargar después de los archivos base/componentes/layout.
+  ============================================================================
+  responsive.css — Media queries centralizadas
+  ============================================================================
+  Consolidación de TODAS las reglas responsivas del proyecto.
+  
+  Cargar ÚLTIMO en el orden de importación para que las media queries
+  sobrescriban los estilos de componentes.
+  
+  Breakpoints:
+  - 1100px: Tablets y pantallas medianas
+  - 900px: Tablets y cambios de layout
+  - 700px: Dispositivos móviles
+  - 600px: Pantallas muy pequeñas
+  ============================================================================
 */
 
-@media (max-width:1100px){
-  .profiles-grid{ grid-template-columns: repeat(2,1fr); gap:1rem }
+/* ========== BREAKPOINT 1100px: Tablets ========== */
+@media (max-width: 1100px) {
+  .profiles-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
 }
 
-@media (max-width:900px){
-  .filters-bar{ flex-direction:column; align-items:stretch }
-  .filter-actions{ margin-left:0 }
+/* ========== BREAKPOINT 900px: Tablets medianas ========== */
+@media (max-width: 900px) {
+  .filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-actions {
+    margin-left: 0;
+  }
 }
 
-@media (max-width:700px){
-  .profiles-grid{ grid-template-columns: repeat(1,1fr); gap:0.9rem }
-  .profile-card{ height: auto }
-  .profile-photo{ height: 100% }
+/* ========== BREAKPOINT 700px: Dispositivos móviles ========== */
+@media (max-width: 700px) {
+  /* Grid de perfiles: una columna */
+  .profiles-grid {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0.9rem;
+  }
 
-  /* Footer responsive rules moved here */
-  .site-footer .footer-inner{ flex-direction:column; align-items:center }
-  .footer-about{ text-align:center; margin-bottom:.6rem }
-  .footer-links{ width:100%; justify-content:center }
+  .profile-card {
+    height: auto;
+  }
+
+  .profile-photo {
+    height: 100%;
+  }
+
+  /* Footer responsivo */
+  .site-footer .footer-inner {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-about {
+    text-align: center;
+    margin-bottom: 0.6rem;
+  }
+
+  .footer-links {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Filtros apilados verticalmente en móvil */
+  .filters-panel.open {
+    flex-direction: column;
+    padding: 0.6rem;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .filters-panel.open .filter-group {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .filter-title {
+    align-self: flex-start;
+    font-size: 1rem;
+  }
+
+  .filters-panel.open .age-inputs input[type="range"] {
+    width: 140px;
+  }
+
+  /* Asegurar que los perfiles sean visibles debajo de los filtros */
+  .profiles-section {
+    margin-top: 1rem;
+  }
+
+  /* Neutralizar overlay en móvil */
+  body.filters-open::before {
+    display: none;
+  }
+
+  body.filters-open main,
+  body.filters-open .site-header,
+  body.filters-open .site-footer,
+  body.filters-open .profiles-section {
+    padding-right: 0;
+  }
 }
 
-@media (max-width:600px){
-  .options-row{ gap:.4rem }
-  .option{ padding:.3rem .45rem }
+/* ========== BREAKPOINT 600px: Pantallas muy pequeñas ========== */
+@media (max-width: 600px) {
+  /* Opciones de filtros más compactas */
+  .options-row {
+    gap: 0.4rem;
+  }
 
-  /* Smaller hero/title sizing for very narrow screens */
-  .hero-title .velvet{ font-size: 3.2rem }
-  .hero-title .club{ font-size: 1.8rem }
-  .profile-photo{ height: 100% }
+  .option {
+    padding: 0.3rem 0.45rem;
+  }
+
+  /* Hero titles más pequeños */
+  .hero-title .velvet {
+    font-size: 3.2rem;
+  }
+
+  .hero-title .club {
+    font-size: 1.8rem;
+  }
+
+  .profile-photo {
+    height: 100%;
+  }
+
+  /* Reducir padding en secciones principales para aprovechar espacio */
+  .profiles-section {
+    padding: 1.5rem 0.8rem;
+  }
+
+  .filter-title {
+    font-size: 0.95rem;
+    padding: 0.45rem 0.7rem;
+  }
+
+  /* Descripción en tarjeta más compacta */
+  .back-content .description {
+    font-size: 0.9rem;
+    max-height: 150px;
+  }
+
+  .btn-more {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+  }
 }

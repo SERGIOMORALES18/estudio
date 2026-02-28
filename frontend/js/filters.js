@@ -1,135 +1,345 @@
 /**
- * filters.js — Lógica separada para el panel de filtros y el filtrado
- * - Mueve las funciones de filtrado y la gestión del panel fuera de `app.js`.
- * - Exporta `initFilters(profiles, gridElement)` que conecta la UI con los datos.
+ * ============================================================================
+ * filters.js — Sistema de filtrado y control del panel de filtros
+ * ============================================================================
+ * 
+ * Responsabilidades:
+ * 1. Inicializar panel de filtros y renderizar perfiles iniciales
+ * 2. Gestionar eventos de cambio en checkboxes y slider de edad
+ * 3. Aplicar lógica de filtrado en cliente (sin backend)
+ * 4. Actualizar grid de perfiles según los filtros seleccionados
+ * 
+ * Filtros disponibles:
+ * - Senos: grandes, pequeños
+ * - Cola: grande, pequeña  
+ * - Preferencias: horario nocturno, anal, trios (estáticas en HTML)
+ * - Edad: máximo (slider 18-45)
+ * 
+ * El filtrado es NO DESTRUCTIVO: no modifica los datos originales,
+ * solo filtra qué tarjetas se muestran.
+ * 
+ * ============================================================================
  */
+
 import { renderProfiles } from './cards.js';
 
+// ========== ESTADO DEL MÓDULO ==========
 let allProfiles = [];
 let filtersPanel = null;
 let filterToggle = null;
 let filterMaxAge = null;
 let _closeHandler = null;
 
+/**
+ * initFilters(profiles, gridElement)
+ * @param {Array} profiles - Array de perfiles a filtrar
+ * @param {HTMLElement} gridElement - Elemento grid donde renderizar perfiles
+ * 
+ * Inicializa el sistema de filtros:
+ * 1. Guarda referencia a los perfiles y elementos del DOM
+ * 2. Renderiza todos los perfiles inicialmente
+ * 3. Conecta event listeners para cambios en filtros
+ * 4. Actualiza el valor mostrado del slider de edad
+ */
 export function initFilters(profiles, gridElement) {
+  // Copiar array de perfiles para no modificar el original
   allProfiles = Array.isArray(profiles) ? profiles.slice() : [];
+  
+  // Obtener referencias a elementos del DOM
   filtersPanel = document.querySelector('.filters-panel');
   filterToggle = document.getElementById('filter-toggle');
   filterMaxAge = document.getElementById('filter-age-range');
   const filterAgeValue = document.getElementById('filter-age-value');
 
-  // Inicial: render con todos los perfiles
+  // ========== RENDER INICIAL ==========
+  // Mostrar todos los perfiles al cargar
   renderProfiles(allProfiles, gridElement);
 
-  // Toggle panel
+  // ========== EVENT LISTENERS ==========
+  // Toggle para abrir/cerrar panel de filtros (cuando exista)
   if (filterToggle && filtersPanel) {
-    filterToggle.addEventListener('click', (e) => {
-      e.preventDefault();
+    filterToggle.addEventListener('click', (event) => {
+      event.preventDefault();
       const willOpen = !filtersPanel.classList.contains('open');
-      if (willOpen) openFilters(); else closeFilters();
+      if (willOpen) {
+        openFilters();
+      } else {
+        closeFilters();
+      }
     });
   }
 
-  // Delegación: aplicar filtros cuando cambian inputs
-  if (filtersPanel) filtersPanel.addEventListener('change', () => applyFilters(gridElement));
+  // Delegación: aplicar filtros cuando cambia cualquier checkbox
+  if (filtersPanel) {
+    filtersPanel.addEventListener('change', () => applyFilters(gridElement));
+  }
+
+  // Slider de edad máxima
   if (filterMaxAge) {
-    filterMaxAge.addEventListener('input', (ev) => {
-      if (filterAgeValue) filterAgeValue.textContent = ev.target.value;
+    filterMaxAge.addEventListener('input', (event) => {
+      if (filterAgeValue) {
+        filterAgeValue.textContent = event.target.value;
+      }
       applyFilters(gridElement);
     });
-    // initialize displayed value
-    if (filterAgeValue) filterAgeValue.textContent = filterMaxAge.value;
+    
+    // Inicializar valor mostrado
+    if (filterAgeValue) {
+      filterAgeValue.textContent = filterMaxAge.value;
+    }
   }
 }
 
-function populateFilters(/*profiles*/) {
-  // Actualmente las preferencias están en el HTML estático.
-  // Aquí podemos poblar dinámicamente si es necesario en el futuro.
-}
-
+/**
+ * applyFilters(gridElement)
+ * @param {HTMLElement} gridElement - Elemento grid a actualizar
+ * 
+ * Proceso de filtrado:
+ * 1. Lee valores de checkboxes y slider seleccionados
+ * 2. Filtra array de perfiles según criterios
+ * 3. Renderiza solo los perfiles que coinciden
+ */
 function applyFilters(gridElement) {
   let filtered = allProfiles.slice();
 
-  const selectedBreast = Array.from(document.querySelectorAll('input[name="breast"]:checked')).map(i=>i.value);
-  const selectedButt = Array.from(document.querySelectorAll('input[name="butt"]:checked')).map(i=>i.value);
-  const selectedPref = Array.from(document.querySelectorAll('input[name="preference"]:checked')).map(i=>i.value);
-  const max = filterMaxAge && filterMaxAge.value ? Number(filterMaxAge.value) : null;
+  // ========== LEER FILTROS SELECCIONADOS ==========
+  const selectedBreast = Array.from(
+    document.querySelectorAll('input[name="breast"]:checked')
+  ).map((input) => input.value);
 
-  if (selectedBreast.length) filtered = filtered.filter(p => selectedBreast.some(val => matchBreast(p, val)));
-  if (selectedButt.length) filtered = filtered.filter(p => selectedButt.some(val => matchButt(p, val)));
-  if (selectedPref.length) filtered = filtered.filter(p => selectedPref.some(val => matchPreference(p, val)));
-  if (max !== null) filtered = filtered.filter(p => Number(p.age) <= max);
+  const selectedButt = Array.from(
+    document.querySelectorAll('input[name="butt"]:checked')
+  ).map((input) => input.value);
 
+  const selectedPref = Array.from(
+    document.querySelectorAll('input[name="preference"]:checked')
+  ).map((input) => input.value);
+
+  const maxAge = filterMaxAge && filterMaxAge.value 
+    ? Number(filterMaxAge.value) 
+    : null;
+
+  // ========== APLICAR FILTROS ==========
+  if (selectedBreast.length) {
+    filtered = filtered.filter(
+      (profile) => selectedBreast.some((value) => matchBreast(profile, value))
+    );
+  }
+
+  if (selectedButt.length) {
+    filtered = filtered.filter(
+      (profile) => selectedButt.some((value) => matchButt(profile, value))
+    );
+  }
+
+  if (selectedPref.length) {
+    filtered = filtered.filter(
+      (profile) => selectedPref.some((value) => matchPreference(profile, value))
+    );
+  }
+
+  if (maxAge !== null) {
+    filtered = filtered.filter((profile) => Number(profile.age) <= maxAge);
+  }
+
+  // ========== ACTUALIZAR GRID ==========
   renderProfiles(filtered, gridElement);
 }
 
-function matchBreast(profile, value){
-  const text = ((profile.description||'') + ' ' + (profile.tags||[]).join(' ')).toLowerCase();
-  if (value === 'grandes') return text.includes('senos grandes') || (text.includes('senos') && text.includes('grande'));
-  if (value === 'pequeños') return text.includes('senos pequeños') || (text.includes('senos') && text.includes('peque'));
+/**
+ * matchBreast(profile, value)
+ * @param {Object} profile - Perfil a verificar
+ * @param {string} value - Valor del filtro ('grandes' o 'pequeños')
+ * @returns {boolean} True si el perfil coincide con el filtro
+ * 
+ * Busca keywords en descripción y tags del perfil
+ */
+function matchBreast(profile, value) {
+  const text = (
+    (profile.description || '') + 
+    ' ' + 
+    (profile.tags || []).join(' ')
+  ).toLowerCase();
+
+  if (value === 'grandes') {
+    return (
+      text.includes('senos grandes') ||
+      (text.includes('senos') && text.includes('grande'))
+    );
+  }
+
+  if (value === 'pequeños') {
+    return (
+      text.includes('senos pequeños') ||
+      (text.includes('senos') && text.includes('peque'))
+    );
+  }
+
   return true;
 }
 
-function matchButt(profile, value){
-  const text = ((profile.description||'') + ' ' + (profile.tags||[]).join(' ')).toLowerCase();
-  if (value === 'grande') return text.includes('cola grande') || (text.includes('cola') && text.includes('grande')) || text.includes('trasero grande') || text.includes('gluteo grande');
-  if (value === 'pequeña') return text.includes('cola pequeña') || (text.includes('cola') && text.includes('peque')) || text.includes('trasero pequeño') || text.includes('gluteo pequeño');
+/**
+ * matchButt(profile, value)
+ * @param {Object} profile - Perfil a verificar
+ * @param {string} value - Valor del filtro ('grande' o 'pequeña')
+ * @returns {boolean} True si el perfil coincide con el filtro
+ */
+function matchButt(profile, value) {
+  const text = (
+    (profile.description || '') + 
+    ' ' + 
+    (profile.tags || []).join(' ')
+  ).toLowerCase();
+
+  if (value === 'grande') {
+    return (
+      text.includes('cola grande') ||
+      (text.includes('cola') && text.includes('grande')) ||
+      text.includes('trasero grande') ||
+      text.includes('glúteo grande')
+    );
+  }
+
+  if (value === 'pequeña') {
+    return (
+      text.includes('cola pequeña') ||
+      (text.includes('cola') && text.includes('peque')) ||
+      text.includes('trasero pequeño') ||
+      text.includes('glúteo pequeño')
+    );
+  }
+
   return true;
 }
 
-function matchPreference(profile, value){
-  const text = ((profile.description||'') + ' ' + (profile.tags||[]).join(' ')).toLowerCase();
+/**
+ * matchPreference(profile, value)
+ * @param {Object} profile - Perfil a verificar  
+ * @param {string} value - Valor del filtro (ej: 'horario nocturno', 'anal', 'trios')
+ * @returns {boolean} True si el perfil coincide con el filtro
+ */
+function matchPreference(profile, value) {
   if (!value) return true;
-  if ((profile.tags||[]).map(t=>t.toLowerCase()).includes(value)) return true;
+
+  const text = (
+    (profile.description || '') + 
+    ' ' + 
+    (profile.tags || []).join(' ')
+  ).toLowerCase();
+
+  // Buscar en tags primero (match exacto)
+  if ((profile.tags || []).map((tag) => tag.toLowerCase()).includes(value)) {
+    return true;
+  }
+
+  // Luego en descripción general
   return text.includes(value.toLowerCase());
 }
 
-function addCloseListeners(){
-  _closeHandler = function(ev){
+/**
+ * openFilters()
+ * Abre el panel de filtros (agregar clase 'open')
+ */
+function openFilters() {
+  if (!filtersPanel) return;
+
+  filtersPanel.classList.add('open');
+  filtersPanel.setAttribute('aria-hidden', 'false');
+  
+  if (filterToggle) {
+    filterToggle.textContent = 'Menú de apuestas ▴';
+  }
+
+  addCloseListeners();
+}
+
+/**
+ * closeFilters()
+ * Cierra el panel de filtros (remover clase 'open')
+ */
+function closeFilters() {
+  if (!filtersPanel) return;
+
+  filtersPanel.classList.remove('open');
+  filtersPanel.setAttribute('aria-hidden', 'true');
+  
+  if (filterToggle) {
+    filterToggle.textContent = 'Menú de apuestas ▾';
+  }
+
+  removeCloseListeners();
+}
+
+/**
+ * addCloseListeners()
+ * Agregar listeners para cerrar panel cuando se clickea fuera
+ */
+function addCloseListeners() {
+  _closeHandler = function (event) {
     if (!filtersPanel) return;
-    const target = ev.target;
-    const inside = filtersPanel.contains(target) || filterToggle.contains(target);
-    if (!inside){
+
+    const target = event.target;
+    const inside = 
+      filtersPanel.contains(target) || 
+      (filterToggle && filterToggle.contains(target));
+    
+    if (!inside) {
       closeFilters();
     }
   };
+
   document.addEventListener('click', _closeHandler, { capture: true });
   window.addEventListener('keydown', onEscClose);
 }
 
-function removeCloseListeners(){
+/**
+ * removeCloseListeners()
+ * Remover listeners de cierre del panel
+ */
+function removeCloseListeners() {
   if (!_closeHandler) return;
+
   document.removeEventListener('click', _closeHandler, { capture: true });
   window.removeEventListener('keydown', onEscClose);
   _closeHandler = null;
 }
 
-function onEscClose(ev){ if (ev.key === 'Escape') closeFilters(); }
-
-function openFilters(){
-  if (!filtersPanel) return;
-  // Show filters inline (no sidebar/modal). This keeps the panel in the document flow
-  // so users can click checkboxes directly and the filtering logic (delegation)
-  // continues to work as before.
-  filtersPanel.classList.add('open');
-  filtersPanel.setAttribute('aria-hidden', 'false');
-  if (filterToggle) filterToggle.textContent = 'Menú de apuestas ▴';
-}
-
-function closeFilters(){
-  if (!filtersPanel) return;
-  filtersPanel.classList.remove('open');
-  filtersPanel.setAttribute('aria-hidden', 'true');
-  if (filterToggle) filterToggle.textContent = 'Menú de apuestas ▾';
-}
-
-export function resetFilters(){
-  document.querySelectorAll('#filters input[type="checkbox"]').forEach(i => i.checked = false);
-  if (filterMaxAge) {
-    // reset to no upper-limit default (set to max value)
-    filterMaxAge.value = filterMaxAge.max || 45;
-    document.getElementById('filter-age-value').textContent = filterMaxAge.value;
+/**
+ * onEscClose(event)
+ * Cerrar panel cuando usuario presiona Escape
+ */
+function onEscClose(event) {
+  if (event.key === 'Escape') {
+    closeFilters();
   }
-  // re-render con todos
-  renderProfiles(allProfiles, document.getElementById('profiles-grid'));
+}
+
+/**
+ * resetFilters()
+ * Reiniciar todos los filtros y mostrar todos los perfiles
+ * 
+ * Exportada por si se necesita un botón "Limpiar filtros"
+ */
+export function resetFilters() {
+  // Desmarcar todos los checkboxes
+  document.querySelectorAll('#filters input[type="checkbox"]').forEach(
+    (input) => {
+      input.checked = false;
+    }
+  );
+
+  // Reset slider de edad al máximo
+  if (filterMaxAge) {
+    filterMaxAge.value = filterMaxAge.max || 45;
+    const filterAgeValue = document.getElementById('filter-age-value');
+    if (filterAgeValue) {
+      filterAgeValue.textContent = filterMaxAge.value;
+    }
+  }
+
+  // Mostrar todos los perfiles
+  renderProfiles(
+    allProfiles, 
+    document.getElementById('profiles-grid')
+  );
 }
