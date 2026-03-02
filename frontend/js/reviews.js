@@ -97,9 +97,6 @@ export function renderReviews(reviews) {
             </div>
           </form>
         </div>
-        <h2>
-          <span class="review-count">${count} REVIEW${count !== 1 ? 'S' : ''}</span>
-        </h2>
     `;
 
   if (count === 0) {

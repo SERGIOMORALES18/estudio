@@ -147,7 +147,7 @@
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  display: block;
+  display: none; /* start hidden; toggled via JS */
   box-shadow: 0 4px 15px rgb(0 0 0 / 20%);
 }
 
