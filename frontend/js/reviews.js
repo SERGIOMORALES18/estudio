@@ -52,6 +52,10 @@ export function renderReviews(reviews) {
   const count = (reviews || []).length;
   let html = `
       <section id="reviews" class="profile-section reviews-section">
+        <h2>
+          <span class="review-count">${count} REVIEW${count !== 1 ? 'S' : ''}</span>
+          <a href="#" class="write-review">Escribe una valoración</a>
+        </h2>
         <div id="write-review" class="write-review-form card">
           <h3>Escribe una valoración</h3>
           <form id="review-form" class="review-form">
@@ -132,10 +136,21 @@ export function renderReviews(reviews) {
 
 // inicializa los escuchadores para el enlace, el formulario y las estrellas
 export function initReviewControls(profileId) {
-  // form already rendered at top; just initialize stars
-  initializeStars();
-
+  // initial setup: stars will be initialized when form is shown
   const reviewContainer = document.getElementById('write-review');
+  const toggleLink = document.querySelector('.write-review');
+  if (toggleLink && reviewContainer) {
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      const showing = reviewContainer.style.display === 'block';
+      reviewContainer.style.display = showing ? 'none' : 'block';
+      if (!showing) {
+        initializeStars();
+        reviewContainer.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
   const reviewForm = document.getElementById('review-form');
   if (reviewForm) {
     reviewForm.addEventListener('submit', async (e) => {
