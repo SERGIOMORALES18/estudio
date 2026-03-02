@@ -1,7 +1,7 @@
 /* reviews.css — estilos específicos para la sección de reseñas en profile.html */
 
 .reviews-section {
-  background: #300000; /* dark red background */
+  background: #300; /* dark red background, slightly lighter for clarity */
   padding: 1.5rem;
   border-radius: 8px;
 }
