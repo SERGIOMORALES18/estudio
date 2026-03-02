@@ -130,6 +130,13 @@
   color: #ffd9b0;
 }
 
+.reviews-section h2 {
+  font-family: 'Playfair Display', serif;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 /* formulario de reseña dentro de la sección de reviews (diseño tipo tarjeta) */
 .write-review-form {
   background: #fff;
