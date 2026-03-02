@@ -61,6 +61,39 @@
   left: 0;
 }
 
+/* ================================================================ */
+/* Animaciones reutilizables compartidas con profile.css
+   - slideLine: barra animada en párrafos de hobbies
+   - fadeIn: aparición suave de secciones
+   - underline: subrayado animado de títulos
+*/
+
+@keyframes slideLine {
+  from { transform: translateY(0); }
+  to { transform: translateY(30%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes underline {
+  from { width: 0; }
+  to { width: 60px; }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.profile-section h2::after {
+  animation: underline 0.6s forwards;
+}
+
+/* ================================================================ */
+
 /* Tarjeta individual que cae */
 .falling .falling-card {
   width: 120px;

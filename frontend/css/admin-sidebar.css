@@ -1,0 +1,156 @@
+/*
+  admin-sidebar.css — estilos del panel izquierdo (sidebar) en el panel de
+  administración. Exportado por admin-styles.css mediante @import.
+*/
+
+/* ========== LAYOUT PRINCIPAL (2 COLUMNAS) ========== */
+.admin-main {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 0;
+  height: calc(100vh - 80px);
+  background: var(--bg-deep);
+}
+
+/* ========== SIDEBAR IZQUIERDO (LISTA DE PERFILES) ========== */
+.admin-sidebar {
+  background: rgba(0, 0, 0, 0.3);
+  border-right: 1px solid var(--accent);
+  overflow-y: auto;
+  padding: 1.5rem 0;
+}
+
+.sidebar-header {
+  padding: 0 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sidebar-header h2 {
+  color: var(--accent);
+  font-size: 1.2rem;
+  margin: 0;
+  flex: 1;
+}
+
+.btn-add-new {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-add-new:hover {
+  background: #fff;
+  color: var(--accent);
+}
+
+/* ========== LISTA DE PERFILES EN SIDEBAR ========== */
+.profiles-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 0 0.5rem;
+}
+
+.profile-list-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.profile-list-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+
+.profile-list-item.active {
+  background: rgba(201, 169, 97, 0.15);
+  border-color: var(--accent);
+}
+
+.profile-list-item-thumb {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 0.5rem;
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.profile-list-item-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-list-item-name {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+
+.profile-list-item-meta {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+/* responsive adjustments that involve sidebar */
+@media (max-width: 1024px) {
+  .admin-main {
+    grid-template-columns: 250px 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-main {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .admin-sidebar {
+    max-height: 300px;
+    border-right: none;
+    border-bottom: 1px solid var(--accent);
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-sidebar {
+    padding: 1rem 0;
+  }
+
+  .sidebar-header {
+    padding: 0 0.8rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sidebar-header h2 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .btn-add-new {
+    width: 100%;
+  }
+}

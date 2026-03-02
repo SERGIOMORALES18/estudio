@@ -1,0 +1,88 @@
+/*
+  profile-hero.css — reglas relativas al "hero" de la página de perfil y
+  navegación interna. Se importa a través de profile.css.
+*/
+
+/* Hero personalizado con imagen de fondo */
+.profile-hero{
+  position: relative;
+  width: 100%;
+  min-height: 50vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-hero-overlay{
+  background: rgba(0,0,0,0.5);
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+}
+
+.profile-name{
+  font-size: clamp(2.5rem, 6vw + 1rem, 6rem);
+  color: #ff59b3;
+  margin: 0;
+  font-weight: 800;
+  text-transform: uppercase;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.8);
+}
+
+.profile-meta{
+  margin-top: 0.8rem;
+  color: #f3d39a;
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  font-size: 0.95rem;
+}
+
+.profile-meta .meta-item::before{
+  content: '\2022';
+  margin: 0 0.4rem;
+  color: var(--muted);
+}
+
+.profile-nav{
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(15,8,8,0.4), rgba(0,0,0,0.2));
+  padding: 0.8rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.profile-nav a{
+  color: #ffd9b0;
+  font-weight: 700;
+  text-decoration: none;
+}
+.profile-nav a:hover{
+  color: #fff;
+}
+
+/* enlace de regreso posicionado sobre la hero para mayor elegancia */
+.back-link{
+  position:absolute;
+  top:1rem;
+  left:1rem;
+  z-index:60;
+  display:inline-block;
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:700;
+  background:rgba(0,0,0,0.3);
+  border:2px solid #ffd700;
+  padding:0.4rem 0.8rem;
+  border-radius:6px;
+  transition: background .22s ease, color .22s ease;
+}
+.back-link:hover{
+  color:#fff;
+  background:rgba(0,0,0,0.6);
+}
