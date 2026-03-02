@@ -1,6 +1,6 @@
 // reviews.js
 // Módulo separado para manejar la visualización y el formulario de reseñas.
-// 
+//
 // Exporta:
 //   renderReviews(reviews) -> HTML string para insertar en la página
 //   initReviewControls(profileId) -> añade los listeners para toggling, envío, estrellas, etc.
@@ -44,12 +44,57 @@ function initializeStars() {
 
 // renderiza el conjunto de reseñas (incluye título, contador y formulario oculto)
 export function renderReviews(reviews) {
+  function formatDate(str) {
+    if (!str) return '';
+    const d = new Date(str);
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  }
   const count = (reviews || []).length;
   let html = `
       <section id="reviews" class="profile-section reviews-section">
+        <div id="write-review" class="write-review-form card">
+          <h3>Escribe una valoración</h3>
+          <form id="review-form" class="review-form">
+            <textarea name="text" rows="5" placeholder="Escribe tu review aquí"></textarea>
+            <input type="text" name="title" placeholder="Título de tu review (opcional)" maxlength="150" />
+            <input type="text" name="author" placeholder="Tu Nombre (opcional)" maxlength="100" />
+
+            <div class="rating-group" data-field="presentation">
+              <span class="rating-label">Presentación</span>
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+              <input type="hidden" name="presentation" value="0">
+            </div>
+            <div class="rating-group" data-field="attention">
+              <span class="rating-label">Atención</span>
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+              <input type="hidden" name="attention" value="0">
+            </div>
+            <div class="rating-group" data-field="photoAccuracy">
+              <span class="rating-label">Foto</span>
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+              <input type="hidden" name="photoAccuracy" value="0">
+            </div>
+
+            <div class="form-actions">
+              <button type="button" id="cancel-review">CANCEL</button>
+              <button type="submit" class="submit-btn">Enviar valoración</button>
+            </div>
+          </form>
+        </div>
         <h2>
           <span class="review-count">${count} REVIEW${count !== 1 ? 'S' : ''}</span>
-          <a href="#write-review" class="write-review">✏️ Escribe una valoración</a>
         </h2>
     `;
 
@@ -60,8 +105,10 @@ export function renderReviews(reviews) {
       html += `
           <div class="review-card">
             <div class="review-header">
-              <img src="${r.avatar || 'https://via.placeholder.com/48?text=?'}" alt="${r.author}" class="review-avatar" />
-              <div class="review-author">${r.author}</div>
+              <div class="review-meta">
+                <div class="review-author">${r.author || 'Anónimo'}</div>
+                ${r.created_at ? `<div class="review-date">${formatDate(r.created_at)}</div>` : ''}
+              </div>
             </div>
             <div class="review-ratings">
               <div class="rating-item">Presentación ${renderStars(r.presentation)}<span class="rating-value">${r.presentation}/5</span></div>
@@ -79,71 +126,16 @@ export function renderReviews(reviews) {
     });
   }
 
-  // añade el formulario (no se muestra hasta que se haga clic en el enlace)
-  html += `
-      <div id="write-review" class="write-review-form card">
-        <h3>Escribe una valoración</h3>
-        <form id="review-form" class="review-form">
-          <textarea name="text" rows="5" placeholder="Escribe tu review aquí"></textarea>
-          <input type="text" name="title" placeholder="Título de tu review (opcional)" maxlength="150" />
-          <input type="text" name="author" placeholder="Tu Nombre (opcional)" maxlength="100" />
-
-          <div class="rating-group" data-field="presentation">
-            <span class="rating-label">Presentación</span>
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-            <input type="hidden" name="presentation" value="0">
-          </div>
-          <div class="rating-group" data-field="attention">
-            <span class="rating-label">Atención</span>
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-            <input type="hidden" name="attention" value="0">
-          </div>
-          <div class="rating-group" data-field="photoAccuracy">
-            <span class="rating-label">Foto</span>
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-            <input type="hidden" name="photoAccuracy" value="0">
-          </div>
-
-          <div class="form-actions">
-            <button type="button" id="cancel-review">CANCEL</button>
-            <button type="submit" class="submit-btn">Enviar valoración</button>
-          </div>
-        </form>
-      </div>
-    `;
-
   html += `</section>`;
   return html;
 }
 
 // inicializa los escuchadores para el enlace, el formulario y las estrellas
 export function initReviewControls(profileId) {
-  const toggleLink = document.querySelector('.write-review');
-  const reviewContainer = document.getElementById('write-review');
-  if (toggleLink && reviewContainer) {
-    toggleLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      const showing = reviewContainer.style.display === 'block';
-      reviewContainer.style.display = showing ? 'none' : 'block';
-      if (!showing) {
-        initializeStars();
-        reviewContainer.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  }
+  // form already rendered at top; just initialize stars
+  initializeStars();
 
+  const reviewContainer = document.getElementById('write-review');
   const reviewForm = document.getElementById('review-form');
   if (reviewForm) {
     reviewForm.addEventListener('submit', async (e) => {
@@ -157,7 +149,7 @@ export function initReviewControls(profileId) {
         const resp = await fetch(`/api/profiles/${profileId}/reviews`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(payload),
         });
         if (!resp.ok) throw new Error('No se pudo enviar la reseña');
         window.location.reload();

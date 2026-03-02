@@ -1,19 +1,19 @@
 /* reviews.css — estilos específicos para la sección de reseñas en profile.html */
 
 .reviews-section {
-  background: #1a0030;
+  background: #300000; /* dark red background */
   padding: 1.5rem;
   border-radius: 8px;
 }
 
 .reviews-section .review-card {
-  background: rgb(0 0 0 / 30%);
+  background: rgb(255 255 255 / 10%);
   border: none;
   border-radius: 12px;
   padding: 1.5rem;
   margin-top: 1.5rem;
   animation: fadeIn 0.6s ease forwards;
-  box-shadow: 0 4px 20px rgb(0 0 0 / 50%);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 30%);
   transition: transform 0.2s ease;
 }
 
@@ -38,7 +38,7 @@
 
 .review-author {
   font-weight: 700;
-  color: #ff59b3;
+  color: #ff4d4d; /* reddish accent */
   font-size: 1rem;
 }
 
@@ -74,7 +74,7 @@
 
 .review-title {
   font-size: 1.2rem;
-  color: #ff59b3;
+  color: #ff4d4d;
   font-weight: 700;
   margin-top: 0.8rem;
 }
@@ -97,16 +97,17 @@
 }
 
 .review-recommend {
-  color: #ff59b3;
+  color: #ff4d4d;
   font-weight: 700;
 }
 
 .write-review {
   text-decoration: none;
-  color: #ff59b3;
+  color: #ff4d4d;
   font-size: 0.9rem;
   margin-left: 1rem;
 }
+
 .review-count {
   font-weight: 700;
   color: #ffd9b0;
@@ -114,16 +115,16 @@
 
 /* formulario de reseña dentro de la sección de reviews (diseño tipo tarjeta) */
 .write-review-form {
-  background: #2b0048;
-  border: 2px solid #ff59b3;
+  background: #fff;
+  border: 2px solid #ff4d4d;
   border-radius: 12px;
   padding: 1.5rem 2rem;
   margin-top: 1.5rem;
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  display: none;
-  box-shadow: 0 4px 15px rgb(0 0 0 / 40%);
+  display: block;
+  box-shadow: 0 4px 15px rgb(0 0 0 / 20%);
 }
 
 /* estrellas interactivas para puntuación (estilo velvet clásico) */
@@ -160,9 +161,11 @@
   0% {
     transform: scale(0.8);
   }
+
   60% {
     transform: scale(1.4);
   }
+
   100% {
     transform: scale(1);
   }
@@ -187,7 +190,7 @@
 
 .review-form input,
 .review-form textarea {
-  border: 1px solid #ff59b3;
+  border: 1px solid #ff4d4d;
 }
 
 /* estilos adicionales que rubricaban las clases de elementos del formulario */
