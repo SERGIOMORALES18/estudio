@@ -228,31 +228,26 @@
 
 #cancel-review {
   background: transparent;
-  color: #fff;
-  border: 1px solid #fff;
+  color: #ff4d4d;
+  border: 1px solid #ff4d4d;
 }
 
 #cancel-review:hover {
-  background: rgb(255 255 255 / 10%);
+  background: rgb(255 77 77 / 10%);
 }
 
 .submit-btn {
-  background: #ffd9b0;
+  background: #ff4d4d;
   border: none;
-  color: #000;
+  color: #fff;
 }
 
 .submit-btn:hover {
-  background: #ffdd80;
+  background: #f66;
 }
 
+/* bordes rojos para inputs de reseña */
 .write-review-form input,
 .write-review-form textarea {
-  /* ya tienen borde definido más arriba */
-}
-
-/* bordes rosas para inputs de reseña */
-.write-review-form input,
-.write-review-form textarea {
-  border: 1px solid #ff59b3;
+  border: 1px solid #ff4d4d;
 }
