@@ -1,0 +1,204 @@
+/*
+  filters.css — estilos relacionados exclusivamente con el panel de filtros
+  y los controles de filtrado que aparecen en la página principal.
+  Se importa después de components.css (para variables) y antes de other
+*/
+
+/* ========== SECCIÓN DE FILTROS ========== */
+.filters-section {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 1.2rem 1rem;
+}
+
+.filters-bar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  background: transparent;
+  padding: 0.6rem;
+  border-radius: 10px;
+}
+
+.filter-title {
+  display: inline-block;
+  font-size: 1.4rem;
+  padding: 0.75rem 1.2rem;
+  background: var(--accent);
+  color: #000;
+  border-radius: 10px;
+  font-weight: 800;
+  box-shadow: 0 6px 18px rgba(255,215,0,0.45);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Panel de filtros: layout horizontal (siempre visible en el flujo) */
+.filters-panel {
+  display: flex;
+  position: static;
+  transform: none;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  opacity: 1;
+  padding: 1rem 1.2rem;
+  margin-top: 0.8rem;
+  /* un tono purpura profundo para diferenciar del fondo rojizo */
+  background: rgba(75,0,75,0.6);
+  border: 1px solid rgba(255,215,0,0.4);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  z-index: 50;
+  backdrop-filter: blur(6px);
+}
+
+/* ========== GRUPOS DE FILTROS Y OPCIONES ========== */
+.filter-group {
+  flex: 1 1 250px;
+  min-width: 200px;
+  background: transparent;
+  margin: 0 0 1rem 0;
+}
+
+/* Selects personalizados para el menú de apuestas */
+.filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(0,0,0,0.4);
+  border: 2px solid var(--accent);
+  color: #ffd9b0;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  min-width: 130px;
+  position: relative;
+  cursor: pointer;
+}
+.filter-select option {
+  background: #2a1018;
+  color: #ffd9b0;
+}
+
+/* Toggle que muestra/oculta panel */
+.filter-toggle {
+  background: transparent;
+  border: none;
+  color: #ffd9b0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: auto;
+  transition: transform 0.2s ease;
+}
+.filter-toggle.open {
+  transform: rotate(180deg);
+}
+
+.group-title {
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 1rem;
+}
+
+.options-row {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+/* Individ checkbox styling */
+.option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(255,215,0,0.08);
+  font-weight: 600;
+}
+
+.option:hover {
+  background: rgba(255,215,0,0.25);
+  border: 2px solid #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option input {
+  display: none;
+}
+
+.option .option-box {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.2);
+  border: 2px solid var(--accent);
+  display: inline-block;
+  position: relative;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.option input:checked + .option-box {
+  background: linear-gradient(180deg, #ffd27a, #e0a83a);
+  border-color: #e0a83a;
+}
+
+.option .option-label {
+  color: #e8dcc8;
+  font-weight: 600;
+}
+
+/* Controles de rango (slider de edad) */
+.age-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.age-inputs input[type="range"] {
+  -webkit-appearance: none;
+  width: 220px;
+  height: 6px;
+  background: linear-gradient(90deg, var(--accent), #c31a1a);
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+}
+
+.age-inputs input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  cursor: pointer;
+}
+
+.age-inputs input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  cursor: pointer;
+  border: none;
+}
+
+.age-inputs output {
+  color: var(--accent);
+  font-weight: 700;
+  min-width: 36px;
+  text-align: center;
+}

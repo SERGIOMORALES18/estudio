@@ -1,0 +1,28 @@
+/*
+  profiles.css — layout de la sección de perfiles (grid y área de animaciones).
+  Importado inmediatamente después de ``components.css`` para aprovechar
+  las variables globales.
+*/
+
+.profiles-section {
+  position: relative;
+  padding: 2.4rem 1.2rem;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.falling-area {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4rem;
+  position: relative;
+  z-index: 3;
+  align-items: start;
+  width: 100%;
+}
