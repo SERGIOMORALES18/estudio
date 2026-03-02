@@ -129,17 +129,18 @@ spawnFallingCard(container, profile)
 ```javascript
 init()
   1. Lee ID de query string (?id=...)
-  2. Obtiene perfiles
-  3. Encuentra perfil coincidente
-  4. Renderiza galería y detalle
+  2. Obtiene perfil individual del backend mediante fetchProfile(id)
+     (recibe también `reviews`)
+  3. Renderiza galería, datos y sección de reseñas
+  4. Adjunta un formulario para escribir una reseña anónima que
+     hace POST a `/api/profiles/:id/reviews`.
 
 getIdFromQuery()
   → Extrae parámetro ID de URL
 
 renderProfile(profile)
-  → Muestra fotos, nombre, edad, descripción
+  → Muestra fotos, nombre, edad, descripción y lista de reviews
 ```
-
 ---
 
 ## 🔄 FLUJO DE DATOS
@@ -147,7 +148,7 @@ renderProfile(profile)
 ```
 app.js (init)
    ↓
-   →→ getProfiles() [api.js]
+   →→ getProfiles() [api.js] (lista sin reseñas) / fetchProfile(id) para detalle con reviews
    ↓
    →→ initFilters() [filters.js]
    │  ↓

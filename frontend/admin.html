@@ -12,12 +12,15 @@
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/admin-styles.css">
+    <link rel="stylesheet" href="css/profile.css">
   </head>
-  <body>
+  <body class="admin-page">
     <header class="site-header">
       <div class="logo"><span class="brand"><span class="velvet">Velvet</span> <span class="club">Club</span></span></div>
       <nav class="top-nav">
-        <a href="#" onclick="logout()">Cerrar Sesion</a>
+        <!-- Usamos id para manejar la acción desde el módulo y evitar dependencias
+             de la función global en el atributo onclick. -->
+        <a href="javascript:void(0)" id="btn-logout">Cerrar Sesion</a>
       </nav>
     </header>
 
@@ -46,47 +49,158 @@
             <form id="profile-form" class="profile-form">
               <input type="hidden" id="profile-id" />
 
+              <!-- sección 1: hero/encabezado -->
               <div class="form-section">
-                <h3>Informacion Basica</h3>
-                
+                <h3>Información básica</h3>
                 <div class="form-group">
                   <label>Alias:</label>
                   <input type="text" id="form-alias" required />
                 </div>
-                
                 <div class="form-row">
-                  <div class="form-group">
-                    <label>Edad:</label>
-                    <input type="number" id="form-age" min="18" required />
-                  </div>
                   <div class="form-group">
                     <label>Ciudad:</label>
                     <input type="text" id="form-city" required />
                   </div>
+                  <div class="form-group">
+                    <label>Edad:</label>
+                    <input type="number" id="form-age" min="18" required />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Profesión:</label>
+                    <input type="text" id="form-profession" />
+                  </div>
+                  <div class="form-group">
+                    <label>Disponibilidad:</label>
+                    <input type="text" id="form-availability" placeholder="Sí / No" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Nivel Inglés (1‑5):</label>
+                    <input type="number" id="form-english" min="1" max="5" />
+                  </div>
+                  <div class="form-group">
+                    <label>Experiencia:</label>
+                    <input type="text" id="form-experience" />
+                  </div>
                 </div>
               </div>
 
+              <!-- sección 2: descripción -->
               <div class="form-section">
-                <h3>Descripcion</h3>
+                <h3>Descripción</h3>
                 <div class="form-group">
                   <label>Descripcion:</label>
                   <textarea id="form-description" rows="4" placeholder="Describe el perfil..."></textarea>
                 </div>
               </div>
 
+              <!-- sección 3: detalles físicos -->
+              <div class="form-section">
+                <h3>Detalles físicos</h3>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Estatura:</label>
+                    <input type="text" id="form-height" />
+                  </div>
+                  <div class="form-group">
+                    <label>Contextura:</label>
+                    <input type="text" id="form-build" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Tipo de busto:</label>
+                    <input type="text" id="form-bust-type" />
+                  </div>
+                  <div class="form-group">
+                    <label>Cirugía:</label>
+                    <input type="text" id="form-surgery" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Color de piel:</label>
+                    <input type="text" id="form-skin-color" />
+                  </div>
+                  <div class="form-group">
+                    <label>Color de cabello:</label>
+                    <input type="text" id="form-hair-color" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Color de ojos:</label>
+                    <input type="text" id="form-eye-color" />
+                  </div>
+                  <div class="form-group">
+                    <label>Tamaño de cola:</label>
+                    <input type="text" id="form-butt-size" />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Tiene tatuajes:</label>
+                    <input type="text" id="form-tattoos" placeholder="Sí / No" />
+                  </div>
+                  <div class="form-group">
+                    <label>Tiene brackets:</label>
+                    <input type="text" id="form-braces" placeholder="Sí / No" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- sección 4: etiquetas y servicios -->
+              <div class="form-section">
+                <h3>Etiquetas y servicios</h3>
+                <div class="form-group">
+                  <label>Tags (separar con comas):</label>
+                  <input type="text" id="form-tags" />
+                </div>
+                <div class="form-group">
+                  <label>Extras / servicios (coma separados):</label>
+                  <input type="text" id="form-extras" />
+                </div>
+              </div>
+
+              <!-- sección 5: gustos y personalidad -->
+              <div class="form-section">
+                <h3>Gustos y personalidad</h3>
+                <div class="form-group">
+                  <label>Hobbies:</label>
+                  <input type="text" id="form-hobbies" />
+                </div>
+                <div class="form-group">
+                  <label>Especialidad / valor agregado:</label>
+                  <input type="text" id="form-special" />
+                </div>
+                <div class="form-group">
+                  <label>Rasgo único:</label>
+                  <input type="text" id="form-unique" />
+                </div>
+              </div>
+
+              <!-- sección 6: tarifa -->
               <div class="form-section">
                 <h3>Tarifa</h3>
                 <div class="form-group">
                   <label>Precio (70 min):</label>
                   <input type="number" id="form-price" min="0" placeholder="0" />
                 </div>
+                <div class="form-group">
+                  <label>Unidad de precio:</label>
+                  <input type="text" id="form-price-unit" placeholder="COP" />
+                </div>
               </div>
 
+              <!-- sección 7: foto -->
               <div class="form-section">
                 <h3>Foto</h3>
                 <div class="form-group">
-                  <label>Foto Principal:</label>
-                  <input type="file" id="form-photo" accept="image/*" />
+                  <label>Fotos Principales (puedes seleccionar varias):</label>
+                  <input type="file" id="form-photo" accept="image/*" multiple />
                   <small>Formatos: JPG, PNG, GIF</small>
                 </div>
                 <div id="photo-upload-preview" class="photo-upload-preview"></div>
@@ -100,19 +214,9 @@
           </div>
 
           <!-- LADO DERECHO: PREVIEW -->
-          <div class="editor-preview-panel">
-            <h3>Vista Previa</h3>
-            <div class="preview-card" id="preview-card">
-              <div class="preview-image">
-                <div id="preview-photo" class="preview-photo">Foto</div>
-              </div>
-              <div class="preview-info">
-                <div class="preview-alias" id="preview-alias">Alias</div>
-                <div class="preview-details" id="preview-details">Edad anios</div>
-                <div class="preview-price" id="preview-price">-</div>
-                <div class="preview-description" id="preview-description">Descripcion</div>
-              </div>
-            </div>
+          <div class="editor-preview-panel" id="editor-preview-panel">
+            <h3>Vista previa</h3>
+            <!-- se llena dinámicamente -->
           </div>
         </div>
       </section>

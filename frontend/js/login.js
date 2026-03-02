@@ -179,6 +179,11 @@ function logout() {
 document.addEventListener('DOMContentLoaded', () => {
   // Configurar listeners para limpiar errores
   clearErrorOnInput();
+  // también manejar el submit del formulario sin usar inline JS
+  const form = document.getElementById('login-form');
+  if (form) {
+    form.addEventListener('submit', handleLogin);
+  }
   
   console.log('✓ Login module initialized');
 });

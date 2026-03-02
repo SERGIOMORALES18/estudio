@@ -17,7 +17,8 @@
  * ============================================================================
  */
 
-import { getProfiles } from './api.js';
+// use server-backed profiles; fall back to mock if request fails
+import { fetchProfilesFromServer, getProfiles as getMockProfiles } from './api.js';
 import { spawnFallingCard } from './animations.js';
 import { renderProfiles } from './cards.js';
 import { initFilters } from './filters.js';
@@ -35,8 +36,14 @@ const fallingArea = document.getElementById('falling-area');
  */
 async function init() {
   try {
-    // Obtener perfiles
-    const profiles = await getProfiles();
+    // Obtener perfiles (intenta servidor, de lo contrario usa el mock)
+    let profiles;
+    try {
+      profiles = await fetchProfilesFromServer();
+    } catch (e) {
+      console.warn('Usando datos mock porque no se pudo conectar al backend');
+      profiles = await getMockProfiles();
+    }
 
     // Inicializar filtros (renderiza perfiles iniciales)
     initFilters(profiles, grid);

@@ -14,8 +14,9 @@
  * ============================================================================
  */
 
-import { getProfiles } from './api.js';
+import { fetchProfile } from './api.js';
 import { spawnFallingCard } from './animations.js';
+import { renderReviews, initReviewControls } from './reviews.js';
 
 
 /**
@@ -41,8 +42,10 @@ function getIdFromQuery() {
  * - Descripción completa
  * - Tags/información adicional
  */
-function renderProfile(profile) {
-  const container = document.getElementById('profile-detail');
+function renderProfile(profile, container = null) {
+  // choose container either provided or default page element
+  container = container || document.getElementById('profile-detail');
+  if (!container) return; // nothing to render into
 
   // ajustar texto del enlace de regreso con la ciudad actual
   const backLink = document.querySelector('.back-link');
@@ -153,7 +156,7 @@ function renderProfile(profile) {
       </div>
       <div class="profile-unique">
         <h3>Algo único que encontrarás en mí</h3>
-        <p>${profile.unique || ''}</p>
+        <p>${profile.unique_trait || ''}</p>
       </div>
     </section>
   `;
@@ -174,58 +177,8 @@ function renderProfile(profile) {
     </section>
   `;
 
-  // renderizado de reseñas si existen
-  function renderStars(rating, max = 5) {
-    let stars = '';
-    for (let i = 1; i <= max; i++) {
-      stars += `<span class="star${i <= rating ? '' : ' empty'}">★</span>`;
-    }
-    return stars;
-  }
 
-  function renderReviews(reviews) {
-    if (!reviews || reviews.length === 0) {
-      return `
-        <section id="reviews" class="profile-section reviews-section">
-          <h2>Reviews</h2>
-          <p>No hay reviews todavía.</p>
-        </section>
-      `;
-    }
-    let html = `
-      <section id="reviews" class="profile-section reviews-section">
-        <h2>
-          <span class="review-count">${reviews.length} REVIEW${reviews.length > 1 ? 'S' : ''}</span>
-          <a href="#write-review" class="write-review">✏️ Escribe una valoración</a>
-        </h2>
-    `;
-
-    reviews.forEach((r) => {
-      html += `
-        <div class="review-card">
-          <div class="review-header">
-            <img src="${r.avatar || 'https://via.placeholder.com/48?text=?'}" alt="${r.author}" class="review-avatar" />
-            <div class="review-author">${r.author}</div>
-          </div>
-          <div class="review-ratings">
-            <div class="rating-item">Presentación ${renderStars(r.presentation)}</div>
-            <div class="rating-item">Atención ${renderStars(r.attention)}</div>
-            <div class="rating-item">Se parece a la fotografía? ${renderStars(r.photoAccuracy)}</div>
-          </div>
-          <div class="review-text">${r.text || ''}</div>
-          <div class="review-footer">
-            ${r.recommendation ? `<div class="review-recommend">${r.recommendationLabel || ''} ${r.recommendation}</div>` : ''}
-            <div class="review-votes">👍${r.thumbsUp || 0} 👎${r.thumbsDown || 0}</div>
-          </div>
-        </div>
-      `;
-    });
-
-    html += `</section>`;
-    return html;
-  }
-
-  const reviewsSection = renderReviews(profile.reviews);
+  const reviewsSection = renderReviews(profile.reviews); // from reviews.js
 
   // ensamblar todo
   container.innerHTML = `
@@ -248,10 +201,12 @@ function renderProfile(profile) {
   });
 
   // efectos decorativos: dejar caer tarjetas cada tanto
+  // **no** los mostramos dentro del panel de administración
   const fallingContainer = document.body;
-  if (profile) {
+  if (profile && !fallingContainer.classList.contains('admin-page')) {
     setInterval(() => spawnFallingCard(fallingContainer, profile), 3000);
   }
+
 
   // configurar galería para abrir imágenes en modal
   const modal = document.getElementById('photo-modal');
@@ -320,18 +275,32 @@ function renderProfile(profile) {
  * 4. Renderiza la página
  */
 async function init() {
+  // only run on the profile page where the target container exists
+  const target = document.getElementById('profile-detail');
+  if (!target) return;
+
   const profileId = getIdFromQuery();
+  if (!profileId) {
+    target.innerHTML = '<p>ID de perfil inválido.</p>';
+    return;
+  }
 
   try {
-    const profiles = await getProfiles();
-    const profile = profiles.find((p) => p.id === profileId);
-    renderProfile(profile);
+    // cargar perfil individual con reseñas desde backend
+    const profile = await fetchProfile(profileId);
+    renderProfile(profile, target);
+
+    // inicializar lógica de reseñas (toggle, envío, estrellas, etc.)
+    initReviewControls(profileId);
   } catch (error) {
     console.error('Error cargando perfil:', error);
-    document.getElementById('profile-detail').innerHTML =
-      '<p>Error al cargar el perfil.</p>';
+    target.innerHTML = '<p>Error al cargar el perfil.</p>';
   }
 }
 
 // ========== PUNTO DE ENTRADA ==========
 window.addEventListener('DOMContentLoaded', init);
+
+// export renderProfile so other modules (admin) puedan mostrar vista previa
+export { renderProfile };
+

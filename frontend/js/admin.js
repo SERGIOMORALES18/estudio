@@ -1,3 +1,5 @@
+import { renderProfile } from './profile.js';
+
 /*
   ============================================================================
   admin.js — Panel de administración con editor en tiempo real
@@ -17,7 +19,9 @@ const SESSION_CONFIG = {
   durationHours: 24
 };
 
+// when we upload images we keep an array; initially empty
 let selectedPhotoBase64 = '';
+let selectedPhotosBase64 = []; // array of base64 strings for all chosen files
 let currentProfileId = null;
 let allProfiles = [];
 
@@ -59,7 +63,39 @@ function clearSession() {
 
 function logout() {
   clearSession();
+  console.log('→ redirigiendo a inicio después de logout');
   window.location.href = 'index.html';
+}
+
+// Proteger navegacion a otras paginas
+
+// fijar accesos globales básicos incluso antes de la comprobación de sesión
+window.logout = logout;
+window.selectProfile = selectProfile;
+window.deleteProfile = deleteProfile;
+window.clearEditor = clearEditor;
+
+// también vamos a exponer createNewProfile para que pueda invocarse desde otras
+// partes si es necesario (e.g. tests manuales)
+window.createNewProfile = createNewProfile;
+
+// registro de eventos simples que no dependen de la sesión
+function bindGlobalButtons() {
+  const btnLogout = document.getElementById('btn-logout');
+  if (btnLogout) {
+    btnLogout.addEventListener('click', (e) => {
+      e.preventDefault();
+      logout();
+    });
+  }
+  const btnAdd = document.getElementById('btn-add-profile');
+  if (btnAdd) {
+    btnAdd.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('botón +Nuevo clickeado');
+      createNewProfile();
+    });
+  }
 }
 
 // Proteger navegacion a otras paginas
@@ -133,7 +169,6 @@ function selectProfile(profileId) {
 
   showEditorContent();
   loadProfileForm(profile);
-  updatePreview(profile);
 
   console.log('Seleccionado: ' + profile.alias);
 }
@@ -145,11 +180,39 @@ function loadProfileForm(profile) {
   document.getElementById('form-city').value = profile.city || '';
   document.getElementById('form-description').value = profile.description || '';
   document.getElementById('form-price').value = profile.price70 || '';
+  document.getElementById('form-price-unit').value = profile.price_unit || '';
+  document.getElementById('form-availability').value = profile.availability || '';
+  document.getElementById('form-english').value = profile.english_level || '';
+  document.getElementById('form-experience').value = profile.experience || '';
+  document.getElementById('form-profession').value = profile.profession || '';
+  document.getElementById('form-height').value = profile.height || '';
+  document.getElementById('form-build').value = profile.build || '';
+  document.getElementById('form-bust-type').value = profile.bust_type || '';
+  document.getElementById('form-surgery').value = profile.surgery || '';
+  document.getElementById('form-skin-color').value = profile.skin_color || '';
+  document.getElementById('form-hair-color').value = profile.hair_color || '';
+  document.getElementById('form-eye-color').value = profile.eye_color || '';
+  document.getElementById('form-butt-size').value = profile.butt_size || '';
+  document.getElementById('form-tattoos').value = profile.tattoos || '';
+  document.getElementById('form-braces').value = profile.braces || '';
+  document.getElementById('form-hobbies').value = profile.hobbies || '';
+  document.getElementById('form-special').value = profile.special || '';
+  document.getElementById('form-unique').value = profile.unique_trait || '';
+  document.getElementById('form-tags').value = (profile.tags || []).join(', ');
+  document.getElementById('form-extras').value = (profile.extras || []).join(', ');
 
-  if (profile.photos && profile.photos[0]) {
-    selectedPhotoBase64 = profile.photos[0];
-    document.getElementById('photo-upload-preview').innerHTML = '<img src="' + profile.photos[0] + '" alt="' + profile.alias + '" />';
+  // refresh preview panel with loaded data
+  updatePreview(profile);
+
+  // populate preview using every photo we have stored
+  if (profile.photos && profile.photos.length) {
+    selectedPhotosBase64 = profile.photos.slice();
+    selectedPhotoBase64 = profile.photos[0] || '';
+    const container = document.getElementById('photo-upload-preview');
+    container.innerHTML = profile.photos.map(p => '<img src="' + p + '" alt="' + (profile.alias||'') + '" />').join('');
   } else {
+    selectedPhotosBase64 = [];
+    selectedPhotoBase64 = '';
     document.getElementById('photo-upload-preview').innerHTML = '';
   }
 }
@@ -160,18 +223,67 @@ function showEditorContent() {
   document.getElementById('editor-subtitle').textContent = '';
 }
 
-function updatePreview(profile) {
-  document.getElementById('preview-alias').textContent = profile.alias || 'Alias';
-  document.getElementById('preview-details').textContent = (profile.age || '--') + ' anios en ' + (profile.city || 'N/A');
-  document.getElementById('preview-price').textContent = profile.price70 ? '$' + profile.price70 + '/70 min' : 'S/D';
-  document.getElementById('preview-description').textContent = profile.description || 'Sin descripcion';
+// ============================================================================
+// PREVIEW HELPERS
+// ============================================================================
 
-  const photoDiv = document.getElementById('preview-photo');
-  if (profile.photos && profile.photos[0]) {
-    photoDiv.innerHTML = '<img src="' + profile.photos[0] + '" alt="' + profile.alias + '" />';
-  } else {
-    photoDiv.innerHTML = 'Foto';
+// construye un objeto profile simplificado a partir de los valores del formulario
+function buildProfileFromForm() {
+  return {
+    alias: document.getElementById('form-alias').value.trim(),
+    city: document.getElementById('form-city').value.trim(),
+    age: parseInt(document.getElementById('form-age').value) || null,
+    description: document.getElementById('form-description').value.trim(),
+    price70: parseFloat(document.getElementById('form-price').value) || 0,
+    price_unit: document.getElementById('form-price-unit').value.trim(),
+    availability: document.getElementById('form-availability').value.trim(),
+    englishLevel: parseInt(document.getElementById('form-english').value) || null,
+    experience: document.getElementById('form-experience').value.trim(),
+    profession: document.getElementById('form-profession').value.trim(),
+    height: document.getElementById('form-height').value.trim(),
+    build: document.getElementById('form-build').value.trim(),
+    bustType: document.getElementById('form-bust-type').value.trim(),
+    surgery: document.getElementById('form-surgery').value.trim(),
+    skinColor: document.getElementById('form-skin-color').value.trim(),
+    hairColor: document.getElementById('form-hair-color').value.trim(),
+    eyeColor: document.getElementById('form-eye-color').value.trim(),
+    buttSize: document.getElementById('form-butt-size').value.trim(),
+    tattoos: document.getElementById('form-tattoos').value.trim(),
+    braces: document.getElementById('form-braces').value.trim(),
+    hobbies: document.getElementById('form-hobbies').value.trim(),
+    special: document.getElementById('form-special').value.trim(),
+    unique: document.getElementById('form-unique').value.trim(),
+    tags: document.getElementById('form-tags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    extras: document.getElementById('form-extras').value.split(',').map(s=>s.trim()).filter(Boolean),
+    photos: selectedPhotosBase64.slice() // copy current upload array
+  };
+}
+
+function updatePreview(profile) {
+  const panel = document.getElementById('editor-preview-panel');
+  if (!panel) return;
+  panel.innerHTML = '<h3>Vista previa</h3>';
+  const inner = document.createElement('div');
+  inner.id = 'admin-preview-inner';
+  panel.appendChild(inner);
+
+  let p = profile;
+  if (!p) {
+    p = buildProfileFromForm();
   }
+  if (!p.alias) {
+    inner.innerHTML = '<p>Rellena el formulario para ver cómo quedará.</p>';
+    return;
+  }
+  renderProfile(p, inner);
+}
+
+// invoke preview update on input changes
+function attachPreviewListeners() {
+  const fields = document.querySelectorAll('#profile-form input, #profile-form textarea');
+  fields.forEach((el) => {
+    el.addEventListener('input', () => updatePreview());
+  });
 }
 
 // ============================================================================
@@ -184,39 +296,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (formPhotoInput) {
     formPhotoInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
+      const files = Array.from(e.target.files || []);
+      selectedPhotosBase64 = [];
+      photoPreview.innerHTML = '';
+
+      files.forEach((file) => {
         const reader = new FileReader();
         reader.onload = (event) => {
-          selectedPhotoBase64 = event.target.result;
-          photoPreview.innerHTML = '<img src="' + selectedPhotoBase64 + '" alt="Preview" />';
-          
-          if (currentProfileId) {
-            document.getElementById('preview-photo').innerHTML = '<img src="' + selectedPhotoBase64 + '" alt="Preview" />';
-          }
+          selectedPhotosBase64.push(event.target.result);
+          // always keep first element also available for legacy logic
+          selectedPhotoBase64 = selectedPhotosBase64[0] || '';
+          photoPreview.innerHTML += '<img src="' + event.target.result + '" alt="Preview" />';
+          updatePreview();
         };
         reader.readAsDataURL(file);
-      }
+      });
     });
   }
-
-  // Actualizar preview en tiempo real
-  const form = document.getElementById('profile-form');
-  if (form) {
-    form.addEventListener('input', () => {
-      if (currentProfileId) {
-        const previewData = {
-          alias: document.getElementById('form-alias').value || 'Alias',
-          age: document.getElementById('form-age').value,
-          city: document.getElementById('form-city').value,
-          price70: document.getElementById('form-price').value,
-          description: document.getElementById('form-description').value,
-          photos: selectedPhotoBase64 ? [selectedPhotoBase64] : []
-        };
-        updatePreview(previewData);
-      }
-    });
-  }
+  attachPreviewListeners();
 });
 
 // ============================================================================
@@ -224,24 +321,17 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================================================
 
 function createNewProfile() {
+  console.log('createNewProfile invoked');
   currentProfileId = null;
   selectedPhotoBase64 = '';
-  
+
   document.getElementById('profile-form').reset();
   document.getElementById('photo-upload-preview').innerHTML = '';
+  updatePreview();
 
   showEditorContent();
   document.getElementById('editor-title').textContent = 'Crear Nuevo Perfil';
   document.getElementById('editor-subtitle').textContent = 'Completa los datos y sube una foto';
-
-  updatePreview({
-    alias: 'Nuevo perfil',
-    age: '',
-    city: '',
-    price70: '',
-    description: '',
-    photos: []
-  });
 
   document.querySelectorAll('.profile-list-item').forEach(el => {
     el.classList.remove('active');
@@ -258,6 +348,7 @@ function clearEditor() {
   document.querySelectorAll('.profile-list-item').forEach(el => {
     el.classList.remove('active');
   });
+  updatePreview();
 }
 
 // ============================================================================
@@ -272,27 +363,74 @@ async function handleProfileSubmit(e) {
   const city = document.getElementById('form-city').value.trim();
   const description = document.getElementById('form-description').value.trim();
   const price70 = parseFloat(document.getElementById('form-price').value) || 0;
+  const priceUnit = document.getElementById('form-price-unit').value.trim();
+  const availability = document.getElementById('form-availability').value.trim();
+  const english_level = parseInt(document.getElementById('form-english').value) || null;
+  const experience = document.getElementById('form-experience').value.trim();
+  const profession = document.getElementById('form-profession').value.trim();
+  const height = document.getElementById('form-height').value.trim();
+  const build = document.getElementById('form-build').value.trim();
+  const bust_type = document.getElementById('form-bust-type').value.trim();
+  const surgery = document.getElementById('form-surgery').value.trim();
+  const skin_color = document.getElementById('form-skin-color').value.trim();
+  const hair_color = document.getElementById('form-hair-color').value.trim();
+  const eye_color = document.getElementById('form-eye-color').value.trim();
+  const butt_size = document.getElementById('form-butt-size').value.trim();
+  const tattoos = document.getElementById('form-tattoos').value.trim();
+  const braces = document.getElementById('form-braces').value.trim();
+  const hobbies = document.getElementById('form-hobbies').value.trim();
+  const special = document.getElementById('form-special').value.trim();
+  const unique_trait = document.getElementById('form-unique').value.trim();
 
   if (!alias || !age || !city) {
     alert('Completa los campos: Alias, Edad, Ciudad');
     return;
   }
 
-  const photos = selectedPhotoBase64 ? [selectedPhotoBase64] : [];
+  const tags = document.getElementById('form-tags').value
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
+  const extras = document.getElementById('form-extras').value
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean);
 
-  const profileData = {
-    alias: alias,
-    age: age,
-    city: city,
-    description: description,
-    price70: price70,
-    photos: photos,
-    tags: [],
-    extras: [],
-    hobbies: '',
-    special: '',
-    unique: ''
-  };
+  // ahora usamos FormData para enviar archivos en lugar de JSON grande
+  const formData = new FormData();
+  formData.append('alias', alias);
+  formData.append('age', age);
+  formData.append('city', city);
+  formData.append('description', description);
+  formData.append('price70', price70);
+  formData.append('price_unit', priceUnit);
+  formData.append('availability', availability);
+  formData.append('english_level', english_level);
+  formData.append('experience', experience);
+  formData.append('profession', profession);
+  formData.append('height', height);
+  formData.append('build', build);
+  formData.append('bust_type', bust_type);
+  formData.append('surgery', surgery);
+  formData.append('skin_color', skin_color);
+  formData.append('hair_color', hair_color);
+  formData.append('eye_color', eye_color);
+  formData.append('butt_size', butt_size);
+  formData.append('tattoos', tattoos);
+  formData.append('braces', braces);
+  formData.append('hobbies', hobbies);
+  formData.append('special', special);
+  formData.append('unique_trait', unique_trait);
+  formData.append('tags', JSON.stringify(tags));
+  formData.append('extras', JSON.stringify(extras));
+
+  // adjuntar archivos reales del input <input type="file" id="form-photo" multiple>
+  const fileInput = document.getElementById('form-photo');
+  if (fileInput && fileInput.files.length) {
+    Array.from(fileInput.files).forEach((file) => {
+      formData.append('photos', file);
+    });
+  }
 
   try {
     const method = currentProfileId ? 'PUT' : 'POST';
@@ -300,11 +438,22 @@ async function handleProfileSubmit(e) {
 
     const response = await fetch(url, {
       method: method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(profileData)
+      body: formData
     });
 
-    if (!response.ok) throw new Error('Error guardando');
+    if (!response.ok) {
+      let errorMsg = 'Error ' + response.status;
+      try {
+        const errorData = await response.json();
+        if (errorData && errorData.error) errorMsg = errorData.error;
+      } catch (e) {
+        // si no viene JSON, manejar casos conocidos
+        if (response.status === 413) {
+          errorMsg = 'Payload demasiado grande; reduce tamaño de las imágenes';
+        }
+      }
+      throw new Error(errorMsg);
+    }
 
     const result = await response.json();
     alert('Perfil "' + alias + '" ' + (currentProfileId ? 'actualizado' : 'creado'));
@@ -312,8 +461,8 @@ async function handleProfileSubmit(e) {
     await loadProfiles();
     clearEditor();
   } catch (err) {
-    console.error('Error:', err);
-    alert('Error al guardar');
+    console.error('Error guardando:', err);
+    alert('Error al guardar: ' + err.message);
   }
 }
 
@@ -348,25 +497,21 @@ async function deleteProfile(profileId) {
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Iniciando panel...');
 
+  // ligamos botones globales que no dependen de la sesión
+  bindGlobalButtons();
+
   if (!checkSession()) {
     return;
   }
 
   loadProfiles();
 
-  const btnAddProfile = document.getElementById('btn-add-profile');
-  if (btnAddProfile) {
-    btnAddProfile.addEventListener('click', (e) => {
-      e.preventDefault();
-      createNewProfile();
-    });
-  }
-
   const profileForm = document.getElementById('profile-form');
   if (profileForm) {
     profileForm.addEventListener('submit', handleProfileSubmit);
   }
 
+  // los accesos ya se fijaron arriba, pero los reafirmamos aquí para seguridad
   window.logout = logout;
   window.selectProfile = selectProfile;
   window.deleteProfile = deleteProfile;
