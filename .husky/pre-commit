@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+.
+"$(dirname "$0")/_/h"
+
+# lint staged files before commit
+npx lint-staged

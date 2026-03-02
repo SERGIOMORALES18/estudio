@@ -6,10 +6,40 @@
   "scripts": {
     "start": "concurrently \"npm --prefix backend start\" \"wait-on http://localhost:3000 && start http://localhost:3000\"",
     "start:backend": "npm --prefix backend start",
-    "dev:backend": "npm --prefix backend run dev"
+    "dev:backend": "npm --prefix backend run dev",
+    "lint:js": "eslint --config .eslintrc.cjs \"**/*.js\"",
+    "lint:css": "stylelint \"frontend/css/**/*.css\"",
+    "lint": "npm run lint:js && npm run lint:css",
+    "format": "prettier --write \"**/*.{js,css,md,json,html}\"",
+    "test": "jest",
+    "dev:frontend": "vite",
+    "build:frontend": "vite build"
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "frontend/css/**/*.css": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "**/*.{html,md,json}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "concurrently": "^8.2.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-node": "^11.1.0",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "lint-staged": "^16.3.1",
+    "prettier": "^3.8.1",
+    "stylelint": "^17.4.0",
+    "stylelint-config-standard": "^40.0.0",
+    "supertest": "^7.2.2",
+    "vite": "^7.3.1",
     "wait-on": "^7.0.1"
   }
 }
