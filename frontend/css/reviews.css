@@ -2,8 +2,9 @@
 
 .reviews-section {
   background: #300; /* dark red background, slightly lighter for clarity */
-  padding: 1.5rem;
+  padding: 2rem; /* más espacio alrededor */
   border-radius: 8px;
+  font-size: 1.05rem; /* escala base ligeramente mayor */
 }
 
 .reviews-section .review-card {
@@ -138,31 +139,66 @@
 }
 
 /* formulario de reseña dentro de la sección de reviews (diseño tipo tarjeta) */
+
+/* se elimina el fondo/contorno blanco para integrarse con el color oscuro de la página */
 .write-review-form {
-  background: #fff;
-  border: 2px solid #ff4d4d;
+  background: transparent;
+  border: none;
   border-radius: 12px;
   padding: 1.5rem 2rem;
   margin-top: 1.5rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+
+  /* dejaremos que el contenedor ocupe todo el ancho disponible */
+  width: 100%;
+  max-width: none;
   display: none; /* start hidden; toggled via JS */
-  box-shadow: 0 4px 15px rgb(0 0 0 / 20%);
+  box-shadow: none;
 }
+
+/* asegurar que los elementos del formulario se ajusten al ancho */
+.write-review-form .review-form input,
+.write-review-form .review-form textarea {
+  width: 100%;
+  padding: 0.8rem 1rem; /* tamaño mayor */
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  background: rgb(255 255 255 / 15%);
+  color: #fff;
+}
+
+/* campo de texto grande debe tener altura adecuada */
+.write-review-form .review-form textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+/* (anteriormente se especificó la altura más arriba con min-height) */
 
 /* estrellas interactivas para puntuación (estilo velvet clásico) */
 .rating-group {
-  display: flex;
+  display: inline-flex; /* shrink to content width */
   align-items: center;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
+  gap: 0.2rem; /* estrellas más juntas */
+  margin-bottom: 0.8rem; /* un poco menos separación entre líneas */
+  width: auto !important;
+  flex-wrap: nowrap;
+}
+
+.rating-group .rating-value {
+  font-size: 1rem; /* un poco más grande */
+  color: #ffd9b0;
+  margin-left: 0.4rem;
+  min-width: 2.5rem;
+  text-align: right;
 }
 
 .rating-group .star {
-  font-size: 1.6rem;
+  font-size: 2rem; /* estrellas más grandes estilo moderno */
   color: #ffd700;
   cursor: pointer;
+  margin: 0 0.1rem; /* pequeño margen lateral adicional */
+  flex: 0 0 auto; /* no se expandan */
   transition:
     color 0.2s ease,
     transform 0.15s ease;
@@ -197,8 +233,8 @@
 
 .rating-group .rating-label {
   color: #ffd9b0;
-  font-size: 0.9rem;
-  margin-right: 0.6rem;
+  font-size: 1rem;
+  margin-right: 0.3rem;
 }
 
 /* placeholder color para inputs del formulario de reseña */
@@ -227,16 +263,21 @@
   font-family: 'Playfair Display', serif;
 }
 
-.rating-item {
-  flex: 1 1 100px;
-  display: flex;
-  flex-direction: column;
+/* el formulario ya no usa `.rating-item`, así que dejamos ese selector vacío.  */
+
+/* si necesitáramos algo específico para ratings dentro del form, lo haríamos
+   con selectores más concretos como `.write-review-form .rating-item`. */
+
+/* asegurar que los campos se vean menos brillantes */
+.write-review-form .review-form input,
+.write-review-form .review-form textarea {
+  background: rgb(255 255 255 / 10%);
+  color: #fff;
 }
 
-.rating-item label {
-  font-size: 0.9rem;
-  color: #ffd9b0;
-  margin-bottom: 0.3rem;
+.write-review-form .review-form input::placeholder,
+.write-review-form .review-form textarea::placeholder {
+  color: #ccc;
 }
 
 .form-actions {
@@ -253,12 +294,17 @@
 
 #cancel-review {
   background: transparent;
-  color: #ff4d4d;
-  border: 1px solid #ff4d4d;
+  color: #fff;
+  border: 1px solid #fff;
+  font-size: 0.95rem;
+}
+
+.submit-btn {
+  font-size: 1rem;
 }
 
 #cancel-review:hover {
-  background: rgb(255 77 77 / 10%);
+  background: rgb(255 255 255 / 10%);
 }
 
 .submit-btn {
@@ -275,4 +321,10 @@
 .write-review-form input,
 .write-review-form textarea {
   border: 1px solid #ff4d4d;
+}
+
+/* mejorar placeholder para que no se vea demasiado rojo */
+.review-form input::placeholder,
+.review-form textarea::placeholder {
+  color: #ccc;
 }

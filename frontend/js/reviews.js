@@ -18,12 +18,16 @@ function renderStars(rating, max = 5) {
 function initializeStars() {
   document.querySelectorAll('.rating-group').forEach((group) => {
     const hidden = group.querySelector('input[type="hidden"]');
+    const valueDisplay = group.querySelector('.rating-value');
     let current = Number(hidden.value) || 0;
     const stars = Array.from(group.querySelectorAll('.star'));
     function updateVisual(val) {
       stars.forEach((s) => {
         s.classList.toggle('filled', Number(s.dataset.value) <= val);
       });
+      if (valueDisplay) {
+        valueDisplay.textContent = `${val}/5`;
+      }
     }
     updateVisual(current);
     stars.forEach((star) => {
@@ -62,6 +66,7 @@ export function renderReviews(reviews) {
             <textarea name="text" rows="5" placeholder="Escribe tu review aquí"></textarea>
             <input type="text" name="title" placeholder="Título de tu review (opcional)" maxlength="150" />
             <input type="text" name="author" placeholder="Tu Nombre (opcional)" maxlength="100" />
+            <input type="email" name="email" placeholder="Tu Mail" maxlength="100" />
 
             <div class="rating-group" data-field="presentation">
               <span class="rating-label">Presentación</span>
@@ -70,6 +75,7 @@ export function renderReviews(reviews) {
               <span class="star" data-value="3">★</span>
               <span class="star" data-value="4">★</span>
               <span class="star" data-value="5">★</span>
+              <span class="rating-value">0/5</span>
               <input type="hidden" name="presentation" value="0">
             </div>
             <div class="rating-group" data-field="attention">
@@ -79,6 +85,7 @@ export function renderReviews(reviews) {
               <span class="star" data-value="3">★</span>
               <span class="star" data-value="4">★</span>
               <span class="star" data-value="5">★</span>
+              <span class="rating-value">0/5</span>
               <input type="hidden" name="attention" value="0">
             </div>
             <div class="rating-group" data-field="photoAccuracy">
@@ -88,6 +95,7 @@ export function renderReviews(reviews) {
               <span class="star" data-value="3">★</span>
               <span class="star" data-value="4">★</span>
               <span class="star" data-value="5">★</span>
+              <span class="rating-value">0/5</span>
               <input type="hidden" name="photoAccuracy" value="0">
             </div>
 

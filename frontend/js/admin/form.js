@@ -3,7 +3,8 @@
   panel de administración.
 */
 
-import { getAllProfiles } from './list.js';
+// static imports used by form logic
+import { loadProfiles } from './list.js';
 
 export function buildProfileFromForm(selectedPhotosBase64 = []) {
   // `selectedPhotosBase64` is maintained in editor.js; caller must pass the
@@ -32,9 +33,17 @@ export function buildProfileFromForm(selectedPhotosBase64 = []) {
     hobbies: document.getElementById('form-hobbies').value.trim(),
     special: document.getElementById('form-special').value.trim(),
     unique: document.getElementById('form-unique').value.trim(),
-    tags: document.getElementById('form-tags').value.split(',').map(s=>s.trim()).filter(Boolean),
-    extras: document.getElementById('form-extras').value.split(',').map(s=>s.trim()).filter(Boolean),
-    photos: selectedPhotosBase64.slice()
+    tags: document
+      .getElementById('form-tags')
+      .value.split(',')
+      .map((s) => s.trim())
+      .filter(Boolean),
+    extras: document
+      .getElementById('form-extras')
+      .value.split(',')
+      .map((s) => s.trim())
+      .filter(Boolean),
+    photos: selectedPhotosBase64.slice(),
   };
 }
 
@@ -70,13 +79,15 @@ export async function handleProfileSubmit(e) {
     return;
   }
 
-  const tags = document.getElementById('form-tags').value
-    .split(',')
-    .map(s => s.trim())
+  const tags = document
+    .getElementById('form-tags')
+    .value.split(',')
+    .map((s) => s.trim())
     .filter(Boolean);
-  const extras = document.getElementById('form-extras').value
-    .split(',')
-    .map(s => s.trim())
+  const extras = document
+    .getElementById('form-extras')
+    .value.split(',')
+    .map((s) => s.trim())
     .filter(Boolean);
 
   const formData = new FormData();
@@ -115,11 +126,13 @@ export async function handleProfileSubmit(e) {
 
   try {
     const method = document.getElementById('profile-id').value ? 'PUT' : 'POST';
-    const url = document.getElementById('profile-id').value ? '/api/profiles/' + document.getElementById('profile-id').value : '/api/profiles';
+    const url = document.getElementById('profile-id').value
+      ? '/api/profiles/' + document.getElementById('profile-id').value
+      : '/api/profiles';
 
     const response = await fetch(url, {
       method: method,
-      body: formData
+      body: formData,
     });
 
     if (!response.ok) {
@@ -135,13 +148,21 @@ export async function handleProfileSubmit(e) {
       throw new Error(errorMsg);
     }
 
-    const result = await response.json();
-    alert('Perfil "' + alias + '" ' + (document.getElementById('profile-id').value ? 'actualizado' : 'creado'));
+    await response.json(); // we don't currently use the returned object
+    alert(
+      'Perfil "' +
+        alias +
+        '" ' +
+        (document.getElementById('profile-id').value ? 'actualizado' : 'creado')
+    );
 
     // recargar lista y reset editor
-    const { loadProfiles } = await import('./list.js');
+    // refresh list after saving; imported at top
     await loadProfiles();
-    clearEditor();
+    // clear the form if the global helper is available
+    if (typeof window.clearEditor === 'function') {
+      window.clearEditor();
+    }
   } catch (err) {
     console.error('Error guardando:', err);
     alert('Error al guardar: ' + err.message);

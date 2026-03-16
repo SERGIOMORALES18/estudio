@@ -15,9 +15,9 @@ const db = require('../src/db');
 // subset of the mock profiles in api.js; you can extend it as needed
 const mockProfiles = [
   {
-    alias:'Ana',
-    age:25,
-    city:'Bogotá',
+    alias: 'Ana',
+    age: 25,
+    city: 'Bogotá',
     availability: 'Sí',
     english_level: 3,
     experience: 'Moderada',
@@ -32,18 +32,26 @@ const mockProfiles = [
     butt_size: 'Pequeña',
     tattoos: 'Sí',
     braces: 'No',
-    extras: ['Anal','Trios (con dos chicos)','Trios (con dos chicas)','Atención a mujeres','Squirt','Fetiche de pies','Roleplay'],
-    hobbies: 'Soy una <span class="highlight">Escort Delgada en Bogotá</span> alta y me encanta cómo se siente: me da seguridad, porte y ese toque elegante que se nota apenas entro 😊. De mi cara, amo mis labios: carnosos, expresivos, con esa forma de decir más de lo que hablo 💋. Mi cintura es chiquita y me encanta cómo marca mis curvas cuando camino; todo se ve y se siente en su lugar 💃. Tengo la piel suave (sí, de las que invitan a acercarse 😌) y una voz dulce que se queda en la cabeza 😏. Me gusta jugar con los detalles: una mirada sostenida, una sonrisa medio traviesa, el perfume justo y un "hola" bajito al oído 😘. Soy una Escort Delgada en Bogotá coqueta sin esfuerzo, cercana, con vibra rica y cero complicaciones 😌',
+    extras: [
+      'Anal',
+      'Trios (con dos chicos)',
+      'Trios (con dos chicas)',
+      'Atención a mujeres',
+      'Squirt',
+      'Fetiche de pies',
+      'Roleplay',
+    ],
+    hobbies:
+      'Soy una <span class="highlight">Escort Delgada en Bogotá</span> alta y me encanta cómo se siente: me da seguridad, porte y ese toque elegante que se nota apenas entro 😊. De mi cara, amo mis labios: carnosos, expresivos, con esa forma de decir más de lo que hablo 💋. Mi cintura es chiquita y me encanta cómo marca mis curvas cuando camino; todo se ve y se siente en su lugar 💃. Tengo la piel suave (sí, de las que invitan a acercarse 😌) y una voz dulce que se queda en la cabeza 😏. Me gusta jugar con los detalles: una mirada sostenida, una sonrisa medio traviesa, el perfume justo y un "hola" bajito al oído 😘. Soy una Escort Delgada en Bogotá coqueta sin esfuerzo, cercana, con vibra rica y cero complicaciones 😌',
     special: 'Soy cercana, coqueta y cero complicaciones; me encanta cómo se siente el momento.',
-    unique_trait: 'Me encanta explorar sin prisa, provocar con una sonrisa y dejar que el juego se ponga intenso.',
+    unique_trait:
+      'Me encanta explorar sin prisa, provocar con una sonrisa y dejar que el juego se ponga intenso.',
     price70: 470,
     price_unit: 'COP',
-    tags:['VIP','Disponible'],
-    photos:[
-      'https://picsum.photos/id/1011/800/1200',
-      'https://picsum.photos/id/1012/800/1200'
-    ],
-    description: 'Estudiante apasionada del arte. Amante de los cafés y las conversaciones profundas.',
+    tags: ['VIP', 'Disponible'],
+    photos: ['https://picsum.photos/id/1011/800/1200', 'https://picsum.photos/id/1012/800/1200'],
+    description:
+      'Estudiante apasionada del arte. Amante de los cafés y las conversaciones profundas.',
     reviews: [
       {
         title: 'Excelente servicio',
@@ -56,7 +64,7 @@ const mockProfiles = [
         recommendationLabel: 'Nos recomendarías?',
         recommendation: 'Sí!',
         thumbsUp: 0,
-        thumbsDown: 0
+        thumbsDown: 0,
       },
       {
         title: 'Volvería sin dudar',
@@ -68,14 +76,14 @@ const mockProfiles = [
         recommendationLabel: 'Repetirías con ella?',
         recommendation: 'claro que sí!',
         thumbsUp: 0,
-        thumbsDown: 0
-      }
-    ]
+        thumbsDown: 0,
+      },
+    ],
   },
   {
-    alias:'Luna',
-    age:28,
-    city:'Medellín',
+    alias: 'Luna',
+    age: 28,
+    city: 'Medellín',
     availability: 'No',
     english_level: 2,
     experience: 'Alta',
@@ -90,17 +98,14 @@ const mockProfiles = [
     butt_size: 'Grande',
     tattoos: 'No',
     braces: 'No',
-    extras: ['Trios (con dos chicas)','Roleplay'],
+    extras: ['Trios (con dos chicas)', 'Roleplay'],
     hobbies: 'Bailar, viajar y descubrir nuevos sabores en la ciudad.',
     special: 'Siempre dispuesta a complacer y sorprender.',
     unique_trait: 'Combina elegancia con una pizca de travesura.',
     price70: 550,
     price_unit: 'COP',
-    tags:['Premium','Horario nocturno'],
-    photos:[
-      'https://picsum.photos/id/1015/800/1200',
-      'https://picsum.photos/id/1016/800/1200'
-    ],
+    tags: ['Premium', 'Horario nocturno'],
+    photos: ['https://picsum.photos/id/1015/800/1200', 'https://picsum.photos/id/1016/800/1200'],
     description: 'Apasionada por la noche y las experiencias exclusivas.',
     reviews: [
       {
@@ -112,10 +117,10 @@ const mockProfiles = [
         recommendationLabel: 'Nos recomendarías?',
         recommendation: 'Claro',
         thumbsUp: 1,
-        thumbsDown: 0
-      }
-    ]
-  }
+        thumbsDown: 0,
+      },
+    ],
+  },
 ];
 
 // helper to convert arrays to JSON strings the same way server.js does
@@ -138,7 +143,9 @@ function prepareForSql(data) {
     const [[{ count }]] = await db.query('SELECT COUNT(*) AS count FROM profiles');
     if (count > 0) {
       console.log('profiles table already contains data (count=' + count + '), seed skipped.');
+      /* eslint-disable no-process-exit */
       process.exit(0);
+      /* eslint-enable no-process-exit */
     }
     for (const p of mockProfiles) {
       const reviews = p.reviews || [];
@@ -165,15 +172,19 @@ function prepareForSql(data) {
             r.recommendationLabel,
             r.recommendation,
             r.thumbsUp || 0,
-            r.thumbsDown || 0
+            r.thumbsDown || 0,
           ]
         );
       }
     }
     console.log(`inserted ${mockProfiles.length} sample profiles plus reviews`);
+    /* eslint-disable no-process-exit */
     process.exit(0);
+    /* eslint-enable no-process-exit */
   } catch (err) {
     console.error('seeding error', err);
+    /* eslint-disable no-process-exit */
     process.exit(1);
+    /* eslint-enable no-process-exit */
   }
 })();

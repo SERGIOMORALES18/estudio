@@ -14,7 +14,7 @@
 
 /* ========== SIDEBAR IZQUIERDO (LISTA DE PERFILES) ========== */
 .admin-sidebar {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgb(0 0 0 / 30%);
   border-right: 1px solid var(--accent);
   overflow-y: auto;
   padding: 1.5rem 0;
@@ -63,7 +63,7 @@
 }
 
 .profile-list-item {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgb(255 255 255 / 5%);
   border: 2px solid transparent;
   border-radius: 8px;
   padding: 1rem;
@@ -73,13 +73,13 @@
 }
 
 .profile-list-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgb(255 255 255 / 8%);
   border-color: var(--accent);
   transform: translateX(4px);
 }
 
 .profile-list-item.active {
-  background: rgba(201, 169, 97, 0.15);
+  background: rgb(201 169 97 / 15%);
   border-color: var(--accent);
 }
 
@@ -89,7 +89,7 @@
   margin: 0 auto 0.5rem;
   border-radius: 6px;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgb(0 0 0 / 30%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,13 +115,13 @@
 }
 
 /* responsive adjustments that involve sidebar */
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   .admin-main {
     grid-template-columns: 250px 1fr;
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .admin-main {
     grid-template-columns: 1fr;
     height: auto;
@@ -134,7 +134,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .admin-sidebar {
     padding: 1rem 0;
   }

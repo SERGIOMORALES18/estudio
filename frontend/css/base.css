@@ -18,7 +18,7 @@
   --bg-deep: #220202;
   --red: #c31a1a;
   --muted: #bdb3b3;
-  --card-bg: rgba(255,255,255,0.04);
+  --card-bg: rgb(255 255 255 / 4%);
   --accent: #c9a961; /* oro mate clásico, no fluorescente */
 }
 
@@ -29,13 +29,14 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
 /* ========== ESTILOS BASE DEL DOCUMENTO ========== */
 body {
-  font-family: 'Playfair Display', Georgia, "Times New Roman", serif;
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
   color: #fff;
   background: linear-gradient(180deg, #5c0b0b 0%, #3b0505 38%, #210202 100%);
   background-attachment: fixed;
@@ -48,11 +49,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background-image: repeating-linear-gradient(
-    45deg,
-    rgba(0,0,0,0.01) 0 1px,
-    transparent 1px 4px
-  );
+  background-image: repeating-linear-gradient(45deg, rgb(0 0 0 / 1%) 0 1px, transparent 1px 4px);
   opacity: 0.03;
   mix-blend-mode: overlay;
 }

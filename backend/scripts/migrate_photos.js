@@ -63,10 +63,14 @@ async function run() {
     }
   }
   console.log('migration complete');
+  /* eslint-disable no-process-exit */
   process.exit(0);
+  /* eslint-enable no-process-exit */
 }
 
 run().catch((err) => {
   console.error('migration error', err);
+  /* eslint-disable no-process-exit */
   process.exit(1);
+  /* eslint-enable no-process-exit */
 });

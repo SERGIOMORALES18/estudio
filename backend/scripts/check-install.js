@@ -36,7 +36,9 @@ if (!fs.existsSync(nodeModules)) {
   }
   if (res.error) {
     console.error('npm install failed:', res.error);
+    /* eslint-disable no-process-exit */
     process.exit(1);
+    /* eslint-enable no-process-exit */
   }
 } else {
   // quick message to confirm setup

@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unpublished-import */
 import { defineConfig } from 'vite';
 import path from 'path';
 

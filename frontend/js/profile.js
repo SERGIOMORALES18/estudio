@@ -2,15 +2,15 @@
  * ============================================================================
  * profile.js — Página de detalle individual de perfil
  * ============================================================================
- * 
+ *
  * Se ejecuta en profile.html y:
  * 1. Lee el ID del perfil de la query string (?id=...)
  * 2. Obtiene los perfiles desde la API
  * 3. Busca el perfil coincidente
  * 4. Renderiza la galería completa y descripción
- * 
+ *
  * Estructura de URL: profile.html?id=1
- * 
+ *
  * ============================================================================
  */
 
@@ -18,15 +18,15 @@ import { fetchProfile } from './api.js';
 import { spawnFallingCard } from './animations.js';
 import { renderReviews, initReviewControls } from './reviews.js';
 
-
 /**
  * getIdFromQuery()
  * @returns {number|null} ID del perfil desde la query string o null
- * 
+ *
  * Lee el parámetro ?id=X de la URL actual.
  * Convierte el valor a número o retorna null si no existe.
  */
 function getIdFromQuery() {
+  // eslint-disable-next-line node/no-unsupported-features/node-builtins
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   return id ? Number(id) : null;
@@ -35,7 +35,7 @@ function getIdFromQuery() {
 /**
  * renderProfile(profile)
  * @param {Object|null} profile - Objeto perfil con todos sus datos
- * 
+ *
  * Renderiza la página de detalle del perfil:
  * - Nombre, edad, ciudad
  * - Galería con todas las fotos
@@ -98,7 +98,7 @@ function renderProfile(profile, container = null) {
     <section id="photos" class="profile-section gallery-section">
       <h2>Fotos</h2>
       <div class="photo-grid">
-        ${profile.photos?.map(url => `<img src="${url}" alt="${profile.alias}" />`).join('')}
+        ${profile.photos?.map((url) => `<img src="${url}" alt="${profile.alias}" />`).join('')}
       </div>
     </section>
   `;
@@ -121,17 +121,17 @@ function renderProfile(profile, container = null) {
       ['Color de ojos', p.eyeColor || '---'],
       ['Tamaño de cola', p.buttSize || '---'],
       ['Tiene tatuajes', p.tattoos || '---'],
-      ['Tiene brackets', p.braces || '---']
+      ['Tiene brackets', p.braces || '---'],
     ];
     return `
       <table class="details-table">
-        ${rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}
+        ${rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}
       </table>
     `;
   }
 
   const extrasList = profile.extras
-    ? `<ul class="extras-list">${profile.extras.map(e => `<li>${e}</li>`).join('')}</ul>`
+    ? `<ul class="extras-list">${profile.extras.map((e) => `<li>${e}</li>`).join('')}</ul>`
     : '';
 
   const detailsSection = `
@@ -177,7 +177,6 @@ function renderProfile(profile, container = null) {
     </section>
   `;
 
-
   const reviewsSection = renderReviews(profile.reviews); // from reviews.js
 
   // ensamblar todo
@@ -206,7 +205,6 @@ function renderProfile(profile, container = null) {
   if (profile && !fallingContainer.classList.contains('admin-page')) {
     setInterval(() => spawnFallingCard(fallingContainer, profile), 3000);
   }
-
 
   // configurar galería para abrir imágenes en modal
   const modal = document.getElementById('photo-modal');
@@ -303,4 +301,3 @@ window.addEventListener('DOMContentLoaded', init);
 
 // export renderProfile so other modules (admin) puedan mostrar vista previa
 export { renderProfile };
-

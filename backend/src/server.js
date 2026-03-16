@@ -27,11 +27,11 @@ const storage = multer.diskStorage({
     // genera un nombre único: timestamp + nombre original sin espacios
     const safeName = file.originalname.replace(/\s+/g, '_');
     cb(null, `${Date.now()}-${safeName}`);
-  }
+  },
 });
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 } // 10MB por archivo
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB por archivo
 });
 
 const app = express();
@@ -74,7 +74,7 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 function normalizeProfile(profile, reviews = []) {
   if (!profile) return profile;
   // campos que en la tabla `profiles` se guardan como JSON string
-  ['photos','tags','extras'].forEach((field) => {
+  ['photos', 'tags', 'extras'].forEach((field) => {
     if (profile[field] && typeof profile[field] === 'string') {
       try {
         profile[field] = JSON.parse(profile[field]);
@@ -99,10 +99,7 @@ async function queryProfileById(id) {
   const [rows] = await db.query('SELECT * FROM profiles WHERE id = ?', [id]);
   if (rows.length === 0) return null;
   // obtener reseñas asociadas
-  const [reviews] = await db.query(
-    'SELECT * FROM profile_reviews WHERE profile_id = ?',
-    [id]
-  );
+  const [reviews] = await db.query('SELECT * FROM profile_reviews WHERE profile_id = ?', [id]);
   return normalizeProfile(rows[0], reviews);
 }
 
@@ -134,10 +131,32 @@ app.get('/api/profiles/:id', async (req, res) => {
 // inserte campos inesperados.
 function filterProfileData(body) {
   const allowed = [
-    'alias','age','city','availability','english_level','experience','profession',
-    'height','build','bust_type','surgery','skin_color','hair_color','eye_color',
-    'butt_size','tattoos','braces','hobbies','special','unique_trait',
-    'price70','price_unit','description','photos','tags','extras'
+    'alias',
+    'age',
+    'city',
+    'availability',
+    'english_level',
+    'experience',
+    'profession',
+    'height',
+    'build',
+    'bust_type',
+    'surgery',
+    'skin_color',
+    'hair_color',
+    'eye_color',
+    'butt_size',
+    'tattoos',
+    'braces',
+    'hobbies',
+    'special',
+    'unique_trait',
+    'price70',
+    'price_unit',
+    'description',
+    'photos',
+    'tags',
+    'extras',
     // las reseñas se almacenan en una tabla separada, así que no las aceptamos aquí
   ];
   const out = {};
@@ -220,9 +239,15 @@ app.delete('/api/profiles/:id', async (req, res) => {
 // filtra campos válidos que vienen del cliente para insertar una reseña
 function filterReviewData(body) {
   const allowed = [
-    'author','title','email',
-    'presentation','attention','photoAccuracy','text',
-    'recommendationLabel','recommendation'
+    'author',
+    'title',
+    'email',
+    'presentation',
+    'attention',
+    'photoAccuracy',
+    'text',
+    'recommendationLabel',
+    'recommendation',
   ];
   const out = {};
   for (const key of allowed) {
@@ -237,10 +262,9 @@ function filterReviewData(body) {
 app.get('/api/profiles/:id/reviews', async (req, res) => {
   try {
     const profileId = req.params.id;
-    const [rows] = await db.query(
-      'SELECT * FROM profile_reviews WHERE profile_id = ?',
-      [profileId]
-    );
+    const [rows] = await db.query('SELECT * FROM profile_reviews WHERE profile_id = ?', [
+      profileId,
+    ]);
     res.json(rows);
   } catch (err) {
     console.error('DB error fetching reviews', err);
@@ -265,7 +289,7 @@ app.post('/api/profiles/:id/reviews', async (req, res) => {
       data.recommendationLabel || null,
       data.recommendation || null,
       0, // thumbsUp
-      0  // thumbsDown
+      0, // thumbsDown
     ];
     const [result] = await db.query(
       `INSERT INTO profile_reviews 
@@ -273,7 +297,9 @@ app.post('/api/profiles/:id/reviews', async (req, res) => {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       fields
     );
-    const [inserted] = await db.query('SELECT * FROM profile_reviews WHERE id = ?', [result.insertId]);
+    const [inserted] = await db.query('SELECT * FROM profile_reviews WHERE id = ?', [
+      result.insertId,
+    ]);
     res.status(201).json(inserted[0]);
   } catch (err) {
     console.error('DB error inserting review', err);
@@ -300,6 +326,11 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(frontendDir, 'index.html'));
 });
 
-app.listen(PORT, () => {
-  console.log(`Velvet backend running at http://localhost:${PORT}`);
-});
+// export the app for testing; start the server only when invoked directly
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Velvet backend running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;

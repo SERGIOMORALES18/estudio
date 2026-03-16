@@ -7,17 +7,20 @@
 import { setCurrentProfile, getAllProfiles } from './list.js';
 import { buildProfileFromForm } from './form.js';
 
+// legacy variable: some code still assigns to it for backward compatibility
+/* eslint-disable no-unused-vars */
 let selectedPhotoBase64 = '';
+/* eslint-enable no-unused-vars */
 let selectedPhotosBase64 = [];
 
 export function selectProfile(profileId) {
-  const profile = getAllProfiles().find(p => p.id === profileId);
+  const profile = getAllProfiles().find((p) => p.id === profileId);
   if (!profile) return;
 
   setCurrentProfile(profileId);
   selectedPhotoBase64 = '';
 
-  document.querySelectorAll('.profile-list-item').forEach(el => {
+  document.querySelectorAll('.profile-list-item').forEach((el) => {
     el.classList.remove('active');
   });
   document.querySelector('[data-profile-id="' + profileId + '"]').classList.add('active');
@@ -64,7 +67,9 @@ function loadProfileForm(profile) {
     selectedPhotosBase64 = profile.photos.slice();
     selectedPhotoBase64 = profile.photos[0] || '';
     const container = document.getElementById('photo-upload-preview');
-    container.innerHTML = profile.photos.map(p => '<img src="' + p + '" alt="' + (profile.alias||'') + '" />').join('');
+    container.innerHTML = profile.photos
+      .map((p) => '<img src="' + p + '" alt="' + (profile.alias || '') + '" />')
+      .join('');
   } else {
     selectedPhotosBase64 = [];
     selectedPhotoBase64 = '';
@@ -77,7 +82,6 @@ function showEditorContent() {
   document.getElementById('editor-title').textContent = 'Editar Perfil';
   document.getElementById('editor-subtitle').textContent = '';
 }
-
 
 function updatePreview(profile) {
   const panel = document.getElementById('editor-preview-panel');
@@ -144,7 +148,7 @@ export function createNewProfile() {
   document.getElementById('editor-title').textContent = 'Crear Nuevo Perfil';
   document.getElementById('editor-subtitle').textContent = 'Completa los datos y sube una foto';
 
-  document.querySelectorAll('.profile-list-item').forEach(el => {
+  document.querySelectorAll('.profile-list-item').forEach((el) => {
     el.classList.remove('active');
   });
 }
@@ -155,11 +159,10 @@ export function clearEditor() {
   document.getElementById('editor-subtitle').textContent = '';
   document.getElementById('profile-form').reset();
   document.getElementById('photo-upload-preview').innerHTML = '';
-  document.querySelectorAll('.profile-list-item').forEach(el => {
+  document.querySelectorAll('.profile-list-item').forEach((el) => {
     el.classList.remove('active');
   });
   updatePreview();
 }
-
 
 /* form submit logic has been moved to ./form.js */

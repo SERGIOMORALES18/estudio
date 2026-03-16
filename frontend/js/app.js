@@ -2,25 +2,26 @@
  * ============================================================================
  * app.js — Punto de entrada e inicialización principal
  * ============================================================================
- * 
+ *
  * Responsabilidades:
  * - Carga perfiles desde la API (módulo api.js)
  * - Renderiza tarjetas de perfil (módulo cards.js)
  * - Inicializa sistema de filtros (módulo filters.js)
  * - Genera animaciones decorativas de caída (módulo animations.js)
- * 
+ *
  * Arquitectura modular:
  * - Cada módulo mantiene su propia responsabilidad
  * - app.js solo orquesta las piezas
  * - No hay lógica duplicada entre módulos
- * 
+ *
  * ============================================================================
  */
 
 // use server-backed profiles; fall back to mock if request fails
 import { fetchProfilesFromServer, getProfiles as getMockProfiles } from './api.js';
 import { spawnFallingCard } from './animations.js';
-import { renderProfiles } from './cards.js';
+// renderProfiles currently unused
+// import { renderProfiles } from './cards.js';
 import { initFilters } from './filters.js';
 
 // ========== ELEMENTOS DEL DOM ==========
@@ -54,9 +55,7 @@ async function init() {
       const active = fallingArea.querySelectorAll('.falling').length;
       if (active > 6) return;
 
-      const randomProfile = profiles[
-        Math.floor(Math.random() * profiles.length)
-      ];
+      const randomProfile = profiles[Math.floor(Math.random() * profiles.length)];
       spawnFallingCard(fallingArea, randomProfile);
     }, 2200); // Generar nueva tarjeta cada 2.2 segundos
   } catch (error) {
